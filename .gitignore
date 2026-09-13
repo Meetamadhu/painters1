@@ -1,0 +1,13 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.vercel
+_elementis_frames/
+_img_cache/
+*.mp4
+_fix_*.py

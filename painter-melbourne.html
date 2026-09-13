@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painter Melbourne — specimen series</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+<style>
+/* ==========================================================================
+   PAINTER MELBOURNE — SPECIMEN SERIES  ·  v3
+
+   Six operating rules, and where each came from:
+
+   1. TWO COLOURS ONLY. Walnut void and warm chalk. Every other tone is
+      chalk at reduced alpha. The only chroma on the page is the material
+      currently under the light — never a brand colour.
+      [all five references run two-colour palettes]
+
+   2. TWO PARALLEL TRACKS. FEEL carries the room. MAKE carries the coats,
+      the cure, the disruption and the cost. Same layout, same specimen,
+      two registers — because a homeowner oscillates between the dream
+      and the due diligence, and losing them to a separate FAQ page is
+      how enquiries die.                    [The New Mobile Workforce]
+
+   3. ONE RENDER LANGUAGE ACROSS THE CATALOGUE. A finish is framed
+      identically as a swatch, as a hero and as a detail, so it stays
+      recognisable at every scale, and it always resolves into
+      specifications.                                       [Floema]
+
+   4. THE CLOSE IS AN ARTIFACT, NOT A FORM. The enquiry is a specimen
+      docket with line items, a reference number and a barcode.
+                                                          [Silencio]
+
+   5. VOID = SPECIMEN. PHOTOGRAPHIC = A REAL MELBOURNE HOME. Provenance
+      is a layout mode, not a badge.                        [Oryzo]
+
+   6. NO SPECTACLE WITHOUT USABILITY. No scroll-jacking, no 3D runtime,
+      no gated content. Every reference here scores 7.3–7.4 on
+      usability against 7.8–8.6 on design. That gap is the opening.
+   ========================================================================== */
+
+:root{
+  --h: 0.62;
+  --dawn:0; --noon:0; --rake:1; --lamp:0;
+
+  /* rule 1 — the entire palette */
+  --void:  #131009;
+  --chalk: #F0E6D6;
+  --c78: rgba(240,230,214,.78);
+  --c54: rgba(240,230,214,.54);
+  --c34: rgba(240,230,214,.34);
+  --c16: rgba(240,230,214,.16);
+  --c07: rgba(240,230,214,.07);
+  /* the one chromatic value, owned by the selected material */
+  --specimen: #C4A98A;
+
+  --rail-w: 78px;
+  --gut: clamp(18px,4.2vw,64px);
+  --ease: cubic-bezier(.22,.61,.36,1);
+
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--void);color:var(--chalk);
+  font-family:"Archivo",system-ui,sans-serif;font-size:16px;line-height:1.5;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-weight:500}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+
+.spec{text-transform:uppercase;font-weight:500;font-size:.72rem;letter-spacing:.05em;line-height:1.3;color:var(--c54)}
+.spec--chalk{color:var(--chalk)}
+.statement{text-transform:uppercase;font-weight:500;font-size:clamp(2.1rem,4.6vw,4.2rem);line-height:.88;letter-spacing:-.005em}
+.statement--sm{font-size:clamp(1.5rem,2.9vw,2.4rem)}
+.human{font-weight:400;font-size:clamp(1rem,1.1vw,1.1rem);line-height:1.58;max-width:46ch;color:var(--c78)}
+hr.hair{border:0;border-top:1px dashed var(--c16);margin:0}
+
+/* ==========================================================================
+   CHROME
+   ========================================================================== */
+.nav{
+  position:fixed;top:0;left:0;right:var(--rail-w);z-index:50;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  padding:18px var(--gut);
+  background:linear-gradient(180deg,rgba(19,16,9,.94),rgba(19,16,9,0));
+}
+.nav .mark{text-transform:uppercase;font-weight:600;font-size:.82rem;letter-spacing:.08em}
+.nav-right{display:flex;align-items:center;gap:1.6rem}
+.nav ul{display:flex;gap:1.4rem;list-style:none;margin:0;padding:0}
+.nav li a{text-transform:uppercase;font-weight:500;font-size:.68rem;letter-spacing:.07em;padding-bottom:3px}
+.nav li a:hover{border-bottom:1px dashed var(--c34)}
+
+/* rule 2 — the track switch. Persistent, never hidden in a menu. */
+.track-switch{display:flex;border:1px solid var(--c34);border-radius:22.5px;overflow:hidden}
+.track-switch button{
+  background:none;border:0;cursor:pointer;font-family:inherit;
+  text-transform:uppercase;font-weight:500;font-size:.64rem;letter-spacing:.09em;
+  color:var(--c54);padding:.5rem .85rem;transition:background .2s var(--ease),color .2s var(--ease);
+}
+.track-switch button[aria-pressed="true"]{background:var(--chalk);color:var(--void)}
+.track-switch button:focus-visible{outline:2px solid var(--specimen);outline-offset:-2px}
+
+.edge-serial{
+  position:fixed;right:calc(var(--rail-w) + 13px);top:50%;z-index:40;
+  transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;
+  text-transform:uppercase;font-size:.6rem;letter-spacing:.22em;color:var(--c34);pointer-events:none;
+}
+
+.rail{
+  position:fixed;top:0;right:0;bottom:0;width:var(--rail-w);z-index:60;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-left:1px dashed var(--c16);background:var(--void);
+  touch-action:none;cursor:ns-resize;user-select:none;
+}
+.rail-cap{position:absolute;top:18px;writing-mode:vertical-rl;text-transform:uppercase;font-size:.58rem;letter-spacing:.12em;color:var(--c34)}
+.rail-track{position:relative;width:1px;height:min(42vh,320px);background:linear-gradient(180deg,#5C6A74,#E6E2D6 34%,#C79A4F 70%,#2B2117)}
+.rail-knob{
+  position:absolute;left:50%;width:46px;height:46px;transform:translate(-50%,-50%);
+  border-radius:9999px;background:var(--chalk);color:var(--void);display:grid;place-items:center;
+  font-size:.62rem;font-weight:600;text-transform:uppercase;will-change:top;
+}
+.rail-knob:focus-visible{outline:2px solid var(--specimen);outline-offset:4px}
+.rail-ticks{
+  position:absolute;right:calc(100% + 14px);top:0;height:100%;
+  display:flex;flex-direction:column;justify-content:space-between;
+  font-size:.58rem;letter-spacing:.08em;color:var(--c34);text-align:right;white-space:nowrap;
+}
+.rail-m{display:none}
+
+/* ==========================================================================
+   SCROLLIFY PANELS + FLEX SHELL
+   ScrollifyJS snaps .panel · Animate.css plays on after · layouts are flex
+   ========================================================================== */
+.panel{
+  position:relative;
+  box-sizing:border-box;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.panel.is-active{z-index:1}
+[data-animate]{opacity:0}
+[data-animate].animate__animated{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  [data-animate]{opacity:1}
+}
+
+/* ==========================================================================
+   ELEMENTIS DESTINATION STAGE — strip wipe · masked titles · detail panel
+   ========================================================================== */
+.el-world{
+  position:relative;
+  min-height:100svh;
+  height:100svh;
+  margin-right:calc(var(--rail-w) + 30px);
+  overflow:hidden;
+  border-bottom:1px dashed var(--c16);
+  background:var(--void);
+}
+.el-stage{
+  position:absolute;inset:0;
+  transition:inset .95s var(--ease);
+  cursor:none;
+}
+.el-world.is-open .el-stage{
+  right:min(42vw,520px);
+  cursor:auto;
+}
+.el-media{
+  position:absolute;inset:0;overflow:hidden;background:var(--void);
+}
+.el-media::after{
+  content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(19,16,9,.72) 0%,rgba(19,16,9,.2) 48%,rgba(19,16,9,.42) 100%),
+    linear-gradient(180deg,rgba(19,16,9,.45) 0%,transparent 42%,rgba(19,16,9,.78) 100%);
+}
+.el-base,.el-incoming{
+  position:absolute;inset:0;z-index:1;
+}
+.el-base img,.el-strip img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:
+    saturate(calc(.68 + var(--rake)*.08 + var(--noon)*.06))
+    contrast(1.05)
+    sepia(calc(.1 + var(--rake)*.14 + var(--lamp)*.12 + var(--dawn)*.06))
+    brightness(calc(.86 + var(--noon)*.1 + var(--rake)*.06 - var(--lamp)*.12 - var(--dawn)*.04));
+  transition:filter .35s var(--ease);
+}
+.el-incoming{
+  z-index:2;pointer-events:none;
+}
+.el-photo-lights{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  mix-blend-mode:soft-light;
+}
+.el-photo-lights .light{position:absolute;inset:0;mix-blend-mode:multiply}
+.el-strips{position:absolute;inset:0}
+.el-strip{
+  position:absolute;left:0;width:100%;
+  height:calc(100% / var(--n) + 1px);
+  top:calc(var(--i) * 100% / var(--n));
+  overflow:hidden;
+  transform:scaleY(0);
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+.el-strip img{
+  position:absolute;left:0;width:100%;
+  height:calc(var(--n) * 100%);
+  top:calc(var(--i) * -100%);
+  max-width:none;
+}
+.el-world.is-animating .el-strip{
+  animation:elStripIn .95s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 28ms);
+}
+@keyframes elStripIn{
+  from{transform:scaleY(0)}
+  to{transform:scaleY(1)}
+}
+.el-ui{
+  position:absolute;inset:0;z-index:5;
+  pointer-events:none;
+  padding:clamp(96px,12vh,132px) var(--gut) clamp(28px,5vh,48px);
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.el-ui > *{pointer-events:auto}
+.el-brand{
+  text-transform:uppercase;font-weight:500;
+  font-size:.72rem;letter-spacing:.34em;color:var(--chalk);
+  margin-bottom:clamp(.8rem,2vh,1.3rem);
+}
+.el-title-mask{
+  overflow:hidden;
+  height:clamp(3.6rem,11vw,8.8rem);
+  margin-bottom:.35rem;
+}
+.el-title-track{
+  display:flex;flex-direction:column;
+  transition:transform .9s var(--ease);
+}
+.el-title{
+  flex:0 0 clamp(3.6rem,11vw,8.8rem);
+  display:flex;align-items:flex-end;
+  font-weight:500;
+  font-size:clamp(3.4rem,11vw,8.6rem);
+  line-height:.88;letter-spacing:-.03em;
+  color:var(--chalk);
+  text-shadow:0 10px 40px rgba(19,16,9,.35);
+  margin:0;
+}
+.el-title-mask.is-swap .el-title-track{
+  transform:translateY(-50%);
+}
+.el-open{
+  display:inline-flex;align-items:center;gap:.55rem;margin-top:1rem;
+  text-transform:uppercase;font-size:.64rem;font-weight:500;letter-spacing:.16em;color:var(--chalk);
+  border-bottom:1px solid var(--c54);padding-bottom:.28rem;
+  background:none;border-left:0;border-right:0;border-top:0;
+  font-family:inherit;cursor:pointer;
+  pointer-events:auto;
+}
+.el-open:hover{border-bottom-color:var(--chalk)}
+.el-open i{
+  display:inline-block;width:11px;height:11px;position:relative;
+}
+.el-open i::before,.el-open i::after{content:"";position:absolute;background:currentColor}
+.el-open i::before{left:0;right:0;top:50%;height:1px;transform:translateY(-50%)}
+.el-open i::after{top:0;bottom:0;left:50%;width:1px;transform:translateX(-50%)}
+.el-lede{
+  position:absolute;left:var(--gut);bottom:clamp(28px,5vh,48px);
+  max-width:34ch;font-size:.9rem;line-height:1.55;color:var(--c78);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+}
+.el-lede.is-out{opacity:0;transform:translate3d(0,10px,0)}
+.el-place{
+  position:absolute;right:clamp(22%,6vw,32%);top:44%;
+  text-transform:uppercase;font-size:.58rem;letter-spacing:.18em;color:var(--c78);
+  transition:opacity .4s var(--ease);
+  pointer-events:none;
+}
+.el-index{
+  position:absolute;right:1.4rem;top:50%;
+  transform:translateY(-50%);
+  writing-mode:vertical-rl;text-orientation:mixed;
+  text-transform:uppercase;font-size:.58rem;letter-spacing:.2em;color:var(--c54);
+  pointer-events:none;
+}
+.el-thumbs{
+  position:absolute;right:var(--gut);bottom:clamp(28px,5vh,48px);
+  display:flex;gap:8px;align-items:flex-end;z-index:6;
+  pointer-events:auto;
+}
+.el-thumbs button{
+  position:relative;width:72px;height:48px;padding:0;overflow:hidden;
+  border:1px solid var(--c34);opacity:.72;cursor:pointer;
+  background:var(--void);
+  transition:opacity .25s var(--ease),border-color .25s var(--ease);
+}
+.el-thumbs button:hover,.el-thumbs button.is-on{opacity:1;border-color:var(--chalk)}
+.el-thumbs img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.75)}
+.el-thumbs span{
+  position:absolute;left:5px;bottom:4px;
+  text-transform:uppercase;font-size:.5rem;letter-spacing:.1em;color:var(--chalk);
+  text-shadow:0 1px 6px rgba(19,16,9,.8);
+}
+
+/* Explore cursor */
+.el-cursor{
+  position:fixed;z-index:80;left:0;top:0;
+  width:108px;height:108px;margin:-54px 0 0 -54px;
+  border-radius:50%;
+  border:1px solid var(--c54);
+  background:rgba(240,230,214,.1);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  text-transform:uppercase;font-size:.58rem;letter-spacing:.16em;color:var(--chalk);
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(-200px,-200px,0) scale(.86);
+  transition:opacity .25s var(--ease),transform .12s linear;
+}
+.el-world.is-hot:not(.is-open) .el-cursor{opacity:1}
+.el-world.is-open .el-cursor,
+.el-world.is-animating .el-cursor{opacity:0 !important}
+
+/* Sliding detail panel */
+.el-panel{
+  position:absolute;top:0;right:0;bottom:0;
+  width:min(42vw,520px);
+  z-index:8;
+  background:#17140f;
+  border-left:1px dashed var(--c16);
+  transform:translateX(104%);
+  transition:transform .95s var(--ease);
+  display:flex;flex-direction:column;
+  color:var(--chalk);
+}
+.el-world.is-open .el-panel{transform:translateX(0)}
+.el-panel__bar{
+  flex:0 0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:1rem;
+  padding:1.1rem 1.25rem;
+  border-bottom:1px dashed var(--c16);
+  background:rgba(19,16,9,.92);
+}
+.el-panel__bar .spec{color:var(--c78)}
+.el-panel__close{
+  background:none;border:1px solid var(--c34);color:var(--chalk);
+  font-family:inherit;text-transform:uppercase;font-size:.58rem;letter-spacing:.12em;
+  padding:.45rem .7rem;cursor:pointer;border-radius:2px;
+}
+.el-panel__close:hover{border-color:var(--chalk)}
+.el-panel__scroll{
+  flex:1 1 auto;
+  overflow-y:auto;overflow-x:hidden;
+  padding:1.4rem 1.35rem 2.4rem;
+  overscroll-behavior:contain;
+}
+.el-panel__shot{
+  width:100%;aspect-ratio:16/10;object-fit:cover;display:block;
+  margin-bottom:1.2rem;filter:saturate(.78) contrast(1.04);
+  border-radius:2px;
+}
+.el-panel__kicker{
+  text-transform:uppercase;font-size:.58rem;letter-spacing:.18em;color:var(--c54);
+  margin-bottom:.55rem;
+}
+.el-panel__title{
+  font-weight:500;font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1.05;
+  letter-spacing:-.01em;margin:0 0 1rem;
+}
+.el-panel__body{font-size:.95rem;line-height:1.6;color:var(--c78);max-width:36ch}
+.el-panel__body + .el-panel__body{margin-top:1rem}
+.el-panel__more{
+  display:inline-flex;margin-top:1.6rem;
+  text-transform:uppercase;font-size:.62rem;letter-spacing:.14em;
+  border-bottom:1px solid var(--c54);padding-bottom:.25rem;
+}
+.el-panel__more:hover{border-color:var(--chalk)}
+.el-world.is-open .el-lede,
+.el-world.is-open .el-place,
+.el-world.is-open .el-thumbs,
+.el-world.is-open .el-index,
+.el-world.is-open .el-open{opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.el-world.is-open .el-title-mask{transform:scale(.92);transform-origin:left bottom;transition:transform .95s var(--ease)}
+
+@media (max-width:1040px){
+  .el-cursor{display:none}
+  .el-stage{cursor:auto}
+  .el-place{display:none}
+  .el-lede{position:relative;left:auto;bottom:auto;margin-top:1.2rem;max-width:46ch}
+  .el-thumbs{left:var(--gut);right:var(--gut);justify-content:flex-start;flex-wrap:wrap}
+}
+@media (max-width:900px){
+  .el-world{margin-right:0;height:auto;min-height:100svh}
+  .el-stage{position:relative;min-height:100svh;inset:auto}
+  .el-world.is-open .el-stage{right:auto}
+  .el-media{position:absolute;inset:0}
+  .el-panel{
+    position:relative;width:100%;transform:none;max-height:0;opacity:0;
+    border-left:0;border-top:1px dashed var(--c16);
+    transition:max-height .8s var(--ease),opacity .5s var(--ease);
+  }
+  .el-world.is-open .el-panel{max-height:80svh;opacity:1}
+  .el-index{display:none}
+  .el-title{font-size:clamp(2.8rem,14vw,4.2rem)}
+  .el-title-mask{height:clamp(3rem,14vw,4.4rem)}
+  .el-title{flex-basis:clamp(3rem,14vw,4.4rem)}
+}
+@media (prefers-reduced-motion:reduce){
+  .el-world.is-animating .el-strip{animation:none;transform:scaleY(1)}
+  .el-title-track,.el-panel,.el-stage{transition:none}
+  .el-cursor{display:none}
+}
+
+/* stills strip + photographic tiles (directional unless verified) */
+
+.story{
+  margin-right:calc(var(--rail-w) + 30px);
+  border-bottom:1px dashed var(--c16);
+}
+.story-head{
+  padding:clamp(48px,7vh,80px) var(--gut) clamp(28px,4vh,44px);
+  max-width:52rem;
+}
+.story-head .statement{margin-top:.85rem}
+.story-strip{
+  display:flex;flex-wrap:wrap;gap:1px;background:var(--c16);
+  margin-right:calc(var(--rail-w) + 30px);
+  border-top:1px dashed var(--c16);border-bottom:1px dashed var(--c16);
+}
+.story-strip .story-tile{flex:1 1 200px}
+.story-tile{
+  position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--void);
+}
+.story-tile .story-tile img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.72) contrast(1.05);
+  transition:transform 1.2s var(--ease),filter .4s var(--ease);
+}
+.story-tile:hover img{transform:scale(1.05);filter:saturate(.9) contrast(1.06)}
+.story-tile figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:2.4rem .9rem .85rem;
+  background:linear-gradient(180deg,transparent,rgba(19,16,9,.88));
+  text-transform:uppercase;font-size:.58rem;letter-spacing:.12em;color:var(--c78);
+}
+.img-credit{
+  margin-top:.75rem;text-transform:uppercase;font-size:.55rem;letter-spacing:.1em;color:var(--c34);
+}
+@media (max-width:720px){
+  .story{margin-right:0}
+  .story-strip{flex-direction:column;margin-right:0}
+  .story-tile{aspect-ratio:16/10}
+}
+@media (prefers-reduced-motion:reduce){
+  .story-tile img{transition:none}
+  .story-tile:hover img{transform:none}
+}
+
+/* ==========================================================================
+   ACTS
+   ========================================================================== */
+.act{
+  position:relative;min-height:100svh;
+  padding:clamp(84px,11vh,132px) var(--gut) clamp(44px,7vh,88px);
+  margin-right:calc(var(--rail-w) + 30px);
+  display:flex;flex-direction:column;justify-content:center;
+  border-bottom:1px dashed var(--c16);
+}
+.act-no{position:absolute;top:clamp(68px,8vh,98px);left:var(--gut);text-transform:uppercase;font-size:.6rem;letter-spacing:.14em;color:var(--c34)}
+
+.reveal{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,2.6vw,44px);width:100%}
+.reveal > .col-l,.reveal > .col-r{flex:1 1 220px;min-width:0;max-width:100%}
+.reveal > .plinth{flex:1.12 1 260px}
+.reveal .statement{font-size:clamp(1.6rem,2.5vw,2.4rem)}
+.reveal .statement--sm{font-size:clamp(1.4rem,2vw,2rem)}
+
+/* rule 2 — track visibility */
+.t-make{display:none}
+body.mode-make .t-feel{display:none}
+body.mode-make .t-make{display:block}
+
+/* ==========================================================================
+   SPECIMEN ENGINE — rule 3
+   ========================================================================== */
+.plinth{position:relative;width:100%;display:grid;place-items:center}
+.specimen{
+  position:relative;width:100%;aspect-ratio:1/1.18;overflow:hidden;isolation:isolate;
+  border-radius:2px;box-shadow:inset 0 0 0 1px var(--c07);
+}
+.specimen > .base,.specimen > .light,.specimen > .grain,.specimen > .rake-hi{position:absolute;inset:0;pointer-events:none}
+
+.light{mix-blend-mode:multiply}
+.l-dawn{opacity:var(--dawn);background:linear-gradient(166deg,#CBD6DF,#A2B0BC 48%,#6F7D89)}
+.l-noon{opacity:var(--noon);background:linear-gradient(172deg,#FFFEF7,#F4F2E7 54%,#D8D6CA)}
+.l-rake{opacity:var(--rake);background:linear-gradient(156deg,#FFE2B2,#EDB56B 44%,#8E6A39)}
+.l-lamp{opacity:var(--lamp);background:linear-gradient(198deg,#7E664A,#3F3527 58%,#1C1811)}
+
+.rake-hi{
+  background:linear-gradient(104deg,rgba(255,244,222,0) 38%,rgba(255,244,222,.4) 47%,rgba(255,240,212,.34) 54%,rgba(255,244,222,0) 62%);
+  transform:translateX(calc((var(--h) - .5) * 86%)) rotate(calc(-17deg + (var(--h) - .5) * -14deg)) scale(1.35);
+  opacity:calc(var(--noon)*.5 + var(--rake)*.85 + var(--lamp)*.22 + var(--dawn)*.2);
+  mix-blend-mode:screen;will-change:transform;
+}
+.grain--trowel{
+  background-image:
+    radial-gradient(42% 20% at 16% 18%, rgba(255,255,255,.52), rgba(255,255,255,0) 66%),
+    radial-gradient(36% 17% at 68% 10%, rgba(0,0,0,.40), rgba(0,0,0,0) 68%),
+    radial-gradient(46% 22% at 58% 40%, rgba(255,255,255,.42), rgba(255,255,255,0) 64%),
+    radial-gradient(33% 16% at 24% 54%, rgba(0,0,0,.40), rgba(0,0,0,0) 66%),
+    radial-gradient(40% 19% at 82% 62%, rgba(255,255,255,.38), rgba(255,255,255,0) 66%),
+    radial-gradient(30% 15% at 46% 78%, rgba(0,0,0,.34), rgba(0,0,0,0) 68%),
+    radial-gradient(44% 20% at 20% 90%, rgba(255,255,255,.34), rgba(255,255,255,0) 66%);
+  background-size:100% 100%;background-repeat:no-repeat;mix-blend-mode:soft-light;opacity:.95;
+}
+.grain--tooth{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+  background-size:190px 190px;mix-blend-mode:overlay;opacity:.4;
+}
+.cast{
+  position:absolute;left:4%;right:4%;bottom:-5%;height:13%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,0,0,.72),rgba(0,0,0,0) 72%);
+  transform-origin:50% 0%;
+  transform:translateX(calc((.5 - var(--h)) * 46%))
+    scaleX(calc(1 + (var(--rake) + var(--dawn)) * .55))
+    scaleY(calc(.55 + var(--dawn)*.8 + var(--noon)*.2 + var(--rake)*.9 + var(--lamp)*.5));
+  filter:blur(calc(6px + var(--lamp) * 14px));
+  opacity:calc(.5 + var(--noon)*.4 + var(--rake)*.45 + var(--dawn)*.35);pointer-events:none;
+}
+.pool{
+  position:absolute;left:50%;top:50%;width:min(120%,900px);aspect-ratio:1/1;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:-1;
+  background:radial-gradient(circle at 50% 46%,rgba(255,226,178,.16),rgba(255,226,178,0) 62%);
+  opacity:calc(.3 + var(--rake)*.7 + var(--lamp)*.55 + var(--noon)*.5 + var(--dawn)*.35);
+}
+
+.m-venetian{background:radial-gradient(122% 92% at 26% 16%,#DDD2BD,#B09E82 52%,#7B6C55)}
+.m-limewash{background:radial-gradient(130% 100% at 70% 20%,#E9E7DC,#C3C5B8 56%,#8F9488)}
+.m-micro{background:linear-gradient(148deg,#BCBEB9,#8E918E 48%,#656866)}
+.m-tadelakt{background:radial-gradient(112% 88% at 34% 72%,#A3B4AC,#6C8079 54%,#3F4D48)}
+.m-metallic{background:linear-gradient(116deg,#6E5730,#D6B073 32%,#84683A 54%,#E3C388 72%,#634E2A)}
+.m-roman{background:radial-gradient(120% 96% at 18% 22%,#CCA689,#A17B5E 52%,#6C5040)}
+
+/* spec sheet — rule 3: a finish always resolves into specifications */
+.specsheet{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--c16);margin-top:1.3rem}
+.specsheet div{background:var(--void);padding:.68rem .8rem}
+.specsheet dt{text-transform:uppercase;font-size:.57rem;letter-spacing:.12em;color:var(--c34);margin:0}
+.specsheet dd{margin:.22rem 0 0;text-transform:uppercase;font-size:.75rem;font-weight:500;letter-spacing:.03em}
+
+/* ==========================================================================
+   ACT 02
+   ========================================================================== */
+.test{display:flex;flex-wrap:wrap;gap:clamp(14px,2.4vw,32px);margin-top:clamp(1.4rem,3vh,2.4rem)}
+.test > div{flex:1 1 260px}
+.test .specimen{aspect-ratio:4/5}
+.test-cap{margin-top:.85rem}
+.test-cap strong{display:block;text-transform:uppercase;font-weight:500;font-size:.78rem;letter-spacing:.05em}
+.test-cap span{display:block;font-weight:400;font-size:.85rem;color:var(--c54);margin-top:.28rem}
+.flat .light{opacity:calc(var(--dawn)*.3 + var(--noon)*.22 + var(--rake)*.28 + var(--lamp)*.55)}
+.flat .rake-hi{opacity:calc(var(--rake)*.16 + var(--noon)*.12);filter:blur(26px)}
+.flat .cast{opacity:calc(.3 + var(--rake)*.3)}
+
+/* ==========================================================================
+   BEFORE / AFTER
+   A wipe, not a slider-with-arrows. The differentiator: both halves are lit
+   by the SAME rail, so you compare the two states at an hour you choose.
+   Every other painter site shows you one fixed before and one fixed after.
+   ========================================================================== */
+.ba{
+  position:relative;width:min(100%,calc(52svh * 1.6));aspect-ratio:16/10;
+  overflow:hidden;isolation:isolate;
+  border-radius:2px;box-shadow:inset 0 0 0 1px var(--c07);
+  touch-action:none;cursor:ew-resize;--wipe:52%;
+  user-select:none;-webkit-user-select:none;
+}
+.ba-layer{position:absolute;inset:0;overflow:hidden}
+.ba-layer > *{position:absolute;inset:0;pointer-events:none}
+.ba-layer.flat{z-index:1}
+.ba-layer.ba-after{
+  z-index:2;
+  /* width wipe — avoids clip-path breaking under parent transforms */
+  inset:auto;
+  top:0;right:0;bottom:0;
+  left:var(--wipe);
+  width:auto;
+  overflow:hidden;
+}
+.ba-after-inner{
+  position:absolute;top:0;bottom:0;left:0;
+  width:var(--ba-w,100%);
+}
+.ba-after-inner > *{position:absolute;inset:0;pointer-events:none}
+/* a supplied photograph covers the rendered surface; without one the
+   surface engine stands in, so the layout never collapses */
+.ba-photo{width:100%;height:100%;object-fit:cover;z-index:2;opacity:.88}
+.ba-layer.flat .ba-photo{
+  filter:grayscale(.55) saturate(.25) contrast(.9) brightness(1.06);
+  opacity:.9;
+}
+.ba-layer.ba-after .ba-photo{
+  filter:saturate(.92) contrast(1.1) sepia(.1);
+  opacity:.78;
+}
+.ba-layer .base{z-index:1}
+.ba-layer .light{z-index:4}
+.ba-layer .grain,.ba-layer .rake-hi,.ba-layer .laps,.ba-layer .marks,.ba-layer .ghost-frame{z-index:5}
+.ba-layer.flat .light{opacity:calc(var(--dawn)*.55 + var(--noon)*.4 + var(--rake)*.5 + var(--lamp)*.85)}
+.ba-handle{position:absolute;top:0;bottom:0;left:var(--wipe);width:2px;background:var(--chalk);z-index:8;will-change:left;pointer-events:none}
+.ba-grip{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:52px;height:52px;border-radius:9999px;border:0;cursor:ew-resize;
+  background:var(--chalk);color:var(--void);font-family:inherit;
+  font-size:.56rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  display:grid;place-items:center;pointer-events:auto;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+.ba-grip:focus-visible{outline:2px solid var(--specimen);outline-offset:3px}
+.ba-grip:hover{transform:translate(-50%,-50%) scale(1.04)}
+.ba-tag{
+  position:absolute;bottom:12px;z-index:9;
+  text-transform:uppercase;font-size:.58rem;font-weight:500;letter-spacing:.1em;
+  padding:.34rem .55rem;background:rgba(19,16,9,.74);color:var(--chalk);border-radius:2px;
+}
+.ba-tag--l{left:12px}
+.ba-tag--r{right:12px}
+
+/* Act 04 — comparator left, copy slides in from the right */
+.ba-split{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(1.4rem,3.5vw,3.2rem);width:100%;
+}
+.ba-split__media{
+  flex:1.35 1 320px;min-width:0;max-width:100%;
+}
+.ba-split__media .ba{
+  width:100%;max-width:none;
+}
+.ba-split__copy{
+  flex:1 1 260px;min-width:0;max-width:38rem;
+  transform:translate3d(2.4rem,0,0);opacity:0;
+  transition:transform .85s var(--ease),opacity .75s var(--ease);
+}
+.panel.is-active .ba-split__copy,
+.ba-split__copy.is-in,
+html:not(.is-scrollify) .ba-split__copy{
+  transform:translate3d(0,0,0);opacity:1;
+}
+.ba-split__copy .statement{max-width:18ch}
+.ba-split__copy .human{margin-top:1.1rem}
+.ba-split__note{margin-top:.9rem}
+@media (max-width:900px){
+  .ba-split{flex-direction:column;align-items:stretch}
+  .ba-split__copy{
+    order:2;max-width:100%;
+    transform:none;opacity:1;transition:none;
+  }
+  .ba-split__media{order:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .ba-split__copy{transform:none;opacity:1;transition:none}
+}
+
+/* ---- the BEFORE wall: an ordinary room, not a ruin --------------------- */
+.w-before{background:#D9D8D2}
+.laps{
+  background-image:repeating-linear-gradient(92deg,
+    rgba(0,0,0,.014) 0 76px, rgba(0,0,0,0) 76px 158px);
+  mix-blend-mode:multiply;
+}
+/* darker marks: filler patches, scuffing at skirting height */
+.marks{
+  background-repeat:no-repeat;
+  background-image:
+    linear-gradient(rgba(0,0,0,.07),rgba(0,0,0,.07)),
+    linear-gradient(rgba(0,0,0,.055),rgba(0,0,0,.055)),
+    linear-gradient(0deg, rgba(58,46,32,.20), rgba(58,46,32,0) 22%);
+  background-position: 64% 40%, 42% 67%, 0 0;
+  background-size: 9% 7%, 6% 5%, 100% 100%;
+  mix-blend-mode:multiply;
+}
+/* picture-ghost on the before wall — named to avoid clash with .btn-ghost */
+.ghost-frame{
+  background-repeat:no-repeat;
+  background-image:
+    linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)),
+    linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.10));
+  background-position:16% 22%, 16% 22%;
+  background-size:22% 30%, 22.6% 30.6%;
+  mix-blend-mode:normal;opacity:.85;
+}
+
+/* ==========================================================================
+   ACT 03
+   ========================================================================== */
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.4rem}
+.sw{position:relative;width:50px;height:50px;padding:0;border:1px solid transparent;border-radius:2px;cursor:pointer;background:none;overflow:hidden}
+.sw i{position:absolute;inset:0;display:block}
+.sw[aria-pressed="true"]{border-color:var(--chalk)}
+.sw:focus-visible{outline:2px solid var(--specimen);outline-offset:3px}
+
+/* ==========================================================================
+   PHOTOGRAPHIC MODE — rule 5
+   ========================================================================== */
+.mode-break{
+  margin-right:calc(var(--rail-w) + 30px);padding:.9rem var(--gut);
+  border-bottom:1px dashed var(--c16);background:var(--c07);
+  display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;justify-content:space-between;
+}
+.rooms{margin-right:calc(var(--rail-w) + 30px);padding:clamp(52px,7vh,88px) var(--gut);background:var(--c07);border-bottom:1px dashed var(--c16)}
+.room{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,48px);align-items:center;padding:clamp(1.6rem,3vh,2.8rem) 0}
+.room > .plinth{flex:1.2 1 280px}
+.room > div:last-child{flex:1 1 260px}
+.room + .room{border-top:1px dashed var(--c16)}
+.room-shot{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;isolation:isolate;border-radius:2px}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.facts span{text-transform:uppercase;font-size:.6rem;letter-spacing:.08em;padding:.32rem .54rem;border:1px dashed var(--c16);border-radius:2px;color:var(--c54)}
+.provenance{display:inline-block;margin-top:1rem;background:var(--chalk);color:var(--void);text-transform:uppercase;font-size:.6rem;font-weight:600;letter-spacing:.08em;padding:.38rem .6rem;border-radius:2px}
+/* A case with no photograph credit can never render as proof. The dashed
+   variant is applied by the renderer, not by hand, so it cannot be forgotten. */
+.provenance--pending{background:transparent;color:var(--c54);border:1px dashed var(--c34);font-weight:500}
+.room--pending .room-shot{opacity:.6;filter:saturate(.35);outline:1px dashed var(--c54);outline-offset:-1px}
+.room--pending .room-shot::after{
+  content:"Awaiting real project";position:absolute;inset:auto 0 0 0;z-index:5;
+  padding:.5rem .7rem;text-transform:uppercase;font-size:.58rem;letter-spacing:.12em;
+  color:var(--chalk);background:rgba(19,16,9,.72);
+}
+.room--pending .facts span{opacity:.5}
+.pending-count{color:var(--chalk)}
+.r1{background:radial-gradient(120% 92% at 24% 20%,#D9CCB4,#A8977C 54%,#6F614A)}
+.r2{background:linear-gradient(150deg,#B6B9B4,#8A8D8A 46%,#585C5A)}
+.r3{background:radial-gradient(130% 100% at 72% 24%,#E3E1D4,#B5B8AB 56%,#7F8477)}
+
+/* ==========================================================================
+   ACT 05
+   ========================================================================== */
+.hours{display:flex;flex-wrap:wrap;gap:1px;background:var(--c16);margin-top:clamp(1.4rem,3vh,2.4rem)}
+.hours .hour{flex:1 1 160px}
+.act-lede{max-width:none;width:100%}
+.act-lede .statement{
+  white-space:nowrap;line-height:1.05;
+  font-size:clamp(1.15rem,2.35vw,2.15rem);
+}
+.act-lede .human{
+  margin-top:.85rem;max-width:none;white-space:nowrap;
+  font-size:clamp(.78rem,1.05vw,.98rem);line-height:1.35;
+}
+@media (max-width:900px){
+  .act-lede .statement,
+  .act-lede .human{white-space:normal}
+  .act-lede .statement{font-size:clamp(1.35rem,6vw,1.85rem)}
+  .act-lede .human{font-size:clamp(.95rem,3.4vw,1.05rem);max-width:46ch}
+}
+.hour{background:var(--void);padding:0 0 1.1rem}
+.hour-sw{position:relative;aspect-ratio:5/3;overflow:hidden;isolation:isolate;margin-bottom:.9rem}
+.hour-sw .base{position:absolute;inset:0;background:radial-gradient(120% 92% at 30% 20%,#D6C9B2,#A8977C 55%,#786A53)}
+.hour-sw .light{position:absolute;inset:0}
+.hour h3{text-transform:uppercase;font-size:.72rem;letter-spacing:.06em;padding:0 .85rem}
+.hour p{font-weight:400;font-size:.82rem;line-height:1.5;color:var(--c54);margin-top:.35rem;padding:0 .85rem}
+
+/* ==========================================================================
+   ACT 06 — THE DOCKET (rule 4)
+   ========================================================================== */
+.close{display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,64px);align-items:center}
+.close > div{flex:1 1 280px}
+.docket{
+  border:1px dashed var(--c34);padding:1.5rem 1.4rem 1.2rem;max-width:420px;width:100%;
+  background:var(--c07);
+}
+.docket-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.docket-head h3{text-transform:uppercase;font-size:.8rem;letter-spacing:.08em}
+.docket-rule{border:0;border-top:1px dashed var(--c34);margin:.9rem 0}
+.line{display:flex;justify-content:space-between;gap:1rem;padding:.34rem 0;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em}
+.line span:first-child{color:var(--c54)}
+.line span:last-child{text-align:right;font-weight:500;font-variant-numeric:tabular-nums}
+.docket-field{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--c16);font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;color:var(--c34)}
+.barcode{
+  height:38px;margin:1.1rem 0 .5rem;
+  background-image:repeating-linear-gradient(90deg,
+    var(--chalk) 0 2px, transparent 2px 4px, var(--chalk) 4px 5px, transparent 5px 9px,
+    var(--chalk) 9px 12px, transparent 12px 13px, var(--chalk) 13px 14px, transparent 14px 18px);
+  opacity:.8;
+}
+.barcode-no{text-align:center;text-transform:uppercase;font-size:.6rem;letter-spacing:.36em;color:var(--c54)}
+.pill{
+  display:inline-block;background:var(--c16);color:var(--chalk);text-transform:uppercase;
+  font-weight:500;font-size:.76rem;letter-spacing:.08em;padding:1rem 1.6rem;border-radius:36px;
+  border:0;cursor:pointer;font-family:inherit;transition:background .2s var(--ease);
+}
+.pill:hover{background:var(--c34)}
+.pill:focus-visible{outline:2px solid var(--specimen);outline-offset:3px}
+.btn-ghost{
+  display:inline-block;border:1px solid var(--c54);border-radius:999px;text-transform:uppercase;
+  font-weight:500;font-size:.66rem;letter-spacing:.1em;padding:.7rem 1.15rem;margin-left:.55rem;
+  color:var(--c78);transition:border-color .25s var(--ease),color .25s var(--ease);
+}
+.btn-ghost:hover{border-color:var(--chalk);color:var(--chalk)}
+
+footer{
+  margin-right:calc(var(--rail-w) + 30px);padding:1.8rem var(--gut) 2.4rem;
+  display:flex;flex-wrap:wrap;gap:.7rem 2rem;justify-content:space-between;
+  text-transform:uppercase;font-size:.6rem;letter-spacing:.08em;color:var(--c34);
+}
+
+
+/* ---- UI refinement layer ---- */
+::selection{background:var(--chalk);color:var(--void)}
+body{text-rendering:optimizeLegibility}
+.statement{letter-spacing:-.012em;text-wrap:balance}
+.human{max-width:44ch;line-height:1.62}
+.nav{background:linear-gradient(180deg,rgba(19,16,9,.96) 0%,rgba(19,16,9,.72) 62%,rgba(19,16,9,0))}
+.nav .mark{transition:opacity .25s var(--ease)}
+.nav .mark:hover{opacity:.72}
+.nav li a{color:var(--c54);border-bottom:1px solid transparent;transition:border-color .25s var(--ease),color .25s var(--ease)}
+.nav li a:hover{color:var(--chalk);border-bottom-color:var(--c34);border-bottom-style:solid}
+.track-switch{border-radius:999px;background:rgba(19,16,9,.35)}
+.track-switch button{padding:.55rem .95rem;letter-spacing:.1em;transition:background .28s var(--ease),color .28s var(--ease)}
+.track-switch button:hover:not([aria-pressed="true"]){color:var(--chalk)}
+.act-no{display:inline-flex;align-items:center;gap:.65rem;letter-spacing:.16em}
+.act-no::before{content:"";width:18px;height:1px;background:var(--c34)}
+.rail-knob{box-shadow:0 0 0 1px rgba(19,16,9,.2),0 8px 24px rgba(0,0,0,.35)}
+.specimen::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;box-shadow:inset 0 0 0 1px var(--c07), inset 0 18% 28% rgba(0,0,0,.12)}
+.specsheet div{transition:background .25s var(--ease)}
+.specsheet div:hover{background:rgba(240,230,214,.04)}
+.sw{width:52px;height:52px;transition:border-color .25s var(--ease),transform .25s var(--ease)}
+.sw:hover{border-color:var(--c34)}
+.sw i{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.sw:hover i{transform:scale(1.06)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 1px var(--void),0 0 0 2px var(--chalk)}
+.ba-handle::before,.ba-handle::after{content:"";position:absolute;left:50%;width:9px;height:9px;border:1px solid var(--chalk);border-radius:50%;transform:translateX(-50%);background:var(--void)}
+.ba-handle::before{top:10px}
+.ba-handle::after{bottom:10px}
+.ba-grip{box-shadow:0 6px 20px rgba(0,0,0,.35);transition:transform .2s var(--ease)}
+.ba-grip:hover{transform:translate(-50%,-50%) scale(1.04)}
+.ba-tag{backdrop-filter:blur(6px);letter-spacing:.12em}
+.pill{background:var(--chalk);color:var(--void);font-weight:600;letter-spacing:.1em;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.28);transition:background .25s var(--ease),transform .2s var(--ease)}
+.pill:hover{background:#f7f0e4;transform:translateY(-1px)}
+.docket{background:linear-gradient(180deg,rgba(240,230,214,.08),rgba(240,230,214,.04));box-shadow:inset 0 0 0 1px var(--c07);padding:1.65rem 1.5rem 1.3rem}
+.hour{transition:background .3s var(--ease)}
+.hour:hover{background:rgba(240,230,214,.03)}
+.t-feel,.t-make{animation:trackIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes trackIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rise{opacity:0;transform:translateY(18px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rise.is-in{opacity:1;transform:none}
+.rise-d1{transition-delay:.08s}
+.rise-d2{transition-delay:.16s}
+.rise-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){
+  .rise{opacity:1;transform:none;transition:none}
+  .t-feel,.t-make{animation:none}
+}
+@media (max-width:720px){
+  .rail-m{background:rgba(19,16,9,.94);backdrop-filter:blur(10px)}
+  .rail-m button{border-radius:999px;transition:background .25s var(--ease),color .25s var(--ease)}
+  .btn-ghost{margin-left:0;margin-top:.7rem;display:inline-block}
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width:1040px){
+  .reveal{flex-direction:column;gap:clamp(20px,4vh,34px)}
+  .reveal .plinth{order:-1;max-width:420px}
+  .room,.close{flex-direction:column}
+  .hours .hour{flex:1 1 40%}
+  .nav ul{display:none}
+  .edge-serial{display:none}
+}
+@media (max-width:720px){
+  :root{--rail-w:0px}
+  .act,.rooms,.mode-break,.story,.el-world,footer{margin-right:0}
+  .nav{right:0}
+  .act{min-height:auto;padding-top:92px;padding-bottom:52px}
+  body{padding-bottom:74px}
+  .rail{display:none}
+  .rail-m{
+    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:var(--void);border-top:1px dashed var(--c16);
+    padding:.5rem .5rem calc(.5rem + env(safe-area-inset-bottom));gap:.35rem;
+  }
+  .rail-m button{
+    flex:1;background:none;border:0;border-radius:22.5px;color:var(--c54);
+    font-family:inherit;font-weight:500;font-size:.66rem;letter-spacing:.06em;
+    text-transform:uppercase;padding:.7rem .2rem;cursor:pointer;
+  }
+  .rail-m button[aria-pressed="true"]{background:var(--chalk);color:var(--void)}
+  .test{grid-template-columns:1fr}
+  .specsheet{grid-template-columns:1fr}
+  /* derive the width from the height we want — width:auto collapses to 0
+     on a container whose children are all absolutely positioned */
+  .reveal .plinth .specimen{width:min(100%,calc(44svh / 1.18));aspect-ratio:1/1.18}
+  .reveal .plinth{justify-items:center}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="mark" href="#hero">Painter Melbourne</a>
+  <div class="nav-right">
+    <ul>
+      <li><a href="#hero">Story</a></li>
+      <li><a href="#act3">Finishes</a></li>
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#act6">Docket</a></li>
+    </ul>
+    <div class="track-switch" role="group" aria-label="Reading track">
+      <button type="button" id="tFeel" aria-pressed="true">Feel</button>
+      <button type="button" id="tMake" aria-pressed="false">Make</button>
+    </div>
+  </div>
+</header>
+
+<div class="edge-serial">Specimen series 01 — Melbourne</div>
+
+<div class="rail" id="rail">
+  <div class="rail-cap">Light</div>
+  <div class="rail-track" id="track">
+    <div class="rail-ticks" aria-hidden="true"><span>07:10</span><span>12:40</span><span>16:20</span><span>20:50</span></div>
+    <div class="rail-knob" id="knob" role="slider" tabindex="0" aria-label="Time of day"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="62" aria-valuetext="4:20pm">16:20</div>
+  </div>
+</div>
+
+<nav class="rail-m" id="railM" aria-label="Time of day">
+  <button type="button" data-h="0.02" aria-pressed="false">07:10</button>
+  <button type="button" data-h="0.36" aria-pressed="false">12:40</button>
+  <button type="button" data-h="0.62" aria-pressed="true">16:20</button>
+  <button type="button" data-h="0.95" aria-pressed="false">20:50</button>
+</nav>
+
+<!-- ===================== ELEMENTIS DESTINATION WORLD ===================== -->
+<section class="panel el-world" id="hero" data-section-name="hero" aria-label="Destination experience">
+  <div class="el-stage" id="elStage">
+    <div class="el-media" aria-hidden="true">
+      <div class="el-base" id="elBase">
+        <img id="elBaseImg" src="public/hero-painter-melbourne.jpg" alt="" width="1600" height="1067" decoding="async">
+      </div>
+      <div class="el-incoming" id="elIncoming" hidden>
+        <div class="el-strips" id="elStrips" style="--n:16"></div>
+      </div>
+      <div class="el-photo-lights">
+        <div class="light l-dawn"></div>
+        <div class="light l-noon"></div>
+        <div class="light l-rake"></div>
+        <div class="light l-lamp"></div>
+      </div>
+    </div>
+
+    <div class="el-ui">
+      <p class="el-brand">Painter Melbourne</p>
+      <div class="el-title-mask" id="elTitleMask">
+        <div class="el-title-track" id="elTitleTrack">
+          <h1 class="el-title" id="elTitleA">Melbourne</h1>
+          <h1 class="el-title" id="elTitleB" aria-hidden="true">The room</h1>
+        </div>
+      </div>
+      <button type="button" class="el-open" id="elOpen">Explore <i aria-hidden="true"></i></button>
+      <p class="el-lede t-feel" id="elLedeFeel"></p>
+      <p class="el-lede t-make" id="elLedeMake"></p>
+      <p class="el-place" id="elPlace">Carlton</p>
+    </div>
+
+    <div class="el-index" id="elIndex">01 — 05</div>
+    <nav class="el-thumbs" id="elThumbs" aria-label="Destinations"></nav>
+    <div class="el-cursor" id="elCursor" aria-hidden="true">Explore</div>
+  </div>
+
+  <aside class="el-panel" id="elPanel" aria-hidden="true">
+    <div class="el-panel__bar">
+      <span class="spec spec--chalk" id="elPanelLabel">Destination</span>
+      <button type="button" class="el-panel__close" id="elClose">Close</button>
+    </div>
+    <div class="el-panel__scroll" id="elPanelScroll">
+      <img class="el-panel__shot" id="elPanelShot" alt="" width="900" height="560">
+      <p class="el-panel__kicker" id="elPanelKicker"></p>
+      <h2 class="el-panel__title" id="elPanelTitle"></h2>
+      <div class="t-feel"><p class="el-panel__body" id="elPanelFeel"></p></div>
+      <div class="t-make"><p class="el-panel__body" id="elPanelMake"></p></div>
+      <p class="img-credit" style="margin-top:1.2rem">Directional image · conceptual atmosphere</p>
+      <a class="el-panel__more" id="elPanelMore" href="#act1">Discover More</a>
+    </div>
+  </aside>
+</section>
+
+<!-- ===================== ACT 01 ===================== -->
+<section class="panel act" id="act1" data-section-name="index">
+  <span class="act-no">Act 01 — Index</span>
+  <div class="reveal">
+    <div class="col-l rise">
+      <h2 class="statement">A colour is a decision.<br>A finish is a behaviour.</h2>
+      <hr class="hair" style="margin:1.4rem 0 1rem">
+      <p class="spec">Painter Melbourne — Venetian plaster, limewash, Tadelakt,<br>microcement, metallic and clay for residential interiors</p>
+    </div>
+
+    <div class="plinth">
+      <div class="pool"></div>
+      <div class="specimen">
+        <div class="base m-venetian"></div>
+        <div class="light l-dawn"></div><div class="light l-noon"></div>
+        <div class="light l-rake"></div><div class="light l-lamp"></div>
+        <div class="grain grain--trowel"></div><div class="grain grain--tooth"></div>
+        <div class="rake-hi"></div>
+      </div>
+      <div class="cast"></div>
+    </div>
+
+    <div class="col-r">
+      <div class="t-feel">
+        <p class="human">Move the light and watch what the surface does with it. Flat paint returns
+        one reflection all day. A hand-applied mineral finish scatters light through depth — cool
+        and chalky at seven, bleached at midday, burning along the trowel marks when the sun drops.
+        That difference is the whole reason these finishes cost what they cost.</p>
+      </div>
+      <div class="t-make">
+        <p class="human">Six to eight coats of lime putty and marble dust over a skim-coated
+        substrate, burnished by hand between passes. Twenty-one days to full hardness, though you
+        can live with it after four. One room at a time, so the house stays usable. Around three to
+        four times the cost of a standard repaint, and it does not need redoing in seven years.</p>
+      </div>
+      <dl class="specsheet">
+        <div><dt>Specimen</dt><dd>No. 001</dd></div>
+        <div><dt>Finish</dt><dd>Burnished Venetian</dd></div>
+        <div><dt>Coats</dt><dd>6–8, hand-troweled</dd></div>
+        <div><dt>Cure</dt><dd>21 days to full hardness</dd></div>
+      </dl>
+      <p class="spec" style="margin-top:1.1rem">Conceptual surface study — not a Painter Melbourne project</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACT 02 ===================== -->
+<section class="panel act" id="act2" data-section-name="light-test">
+  <span class="act-no">Act 02 — The light test</span>
+  <div class="act-lede">
+    <h2 class="statement statement--sm">Two walls. One window. Only one of them is doing anything.</h2>
+    <div class="t-feel">
+      <p class="human">Both surfaces below are the same colour. Drag the light through a full day and the acrylic holds its single note while the plaster opens, clouds and burnishes. Nothing has been added to the room — only the hour has changed.</p>
+    </div>
+    <div class="t-make">
+      <p class="human">Acrylic sits as a sealed film with one reflection angle. Mineral finishes are porous and slightly irregular, so light enters, scatters and leaves at a different angle from every square centimetre. That is also why they breathe, why they suit solid brick, and why a bad substrate shows through instantly.</p>
+    </div>
+  </div>
+
+  <div class="test">
+    <div>
+      <div class="plinth">
+        <div class="specimen flat">
+          <div class="base" style="background:#C4BDAE"></div>
+          <div class="light l-dawn"></div><div class="light l-noon"></div>
+          <div class="light l-rake"></div><div class="light l-lamp"></div>
+          <div class="grain grain--tooth"></div><div class="rake-hi"></div>
+        </div>
+        <div class="cast"></div>
+      </div>
+      <div class="test-cap"><strong>Flat acrylic, low sheen</strong>
+        <span class="t-feel">One reflection angle. One mood, from breakfast to bedtime.</span>
+        <span class="t-make">2 coats over sealer. 4 hours recoat. Wipeable. 7–10 year repaint cycle.</span>
+      </div>
+    </div>
+    <div>
+      <div class="plinth">
+        <div class="pool"></div>
+        <div class="specimen">
+          <div class="base m-venetian"></div>
+          <div class="light l-dawn"></div><div class="light l-noon"></div>
+          <div class="light l-rake"></div><div class="light l-lamp"></div>
+          <div class="grain grain--trowel"></div><div class="grain grain--tooth"></div>
+          <div class="rake-hi"></div>
+        </div>
+        <div class="cast"></div>
+      </div>
+      <div class="test-cap"><strong>Burnished Venetian plaster</strong>
+        <span class="t-feel">Depth you can read from across the room, and again at 9pm.</span>
+        <span class="t-make">6–8 coats. 21 day cure. Wax-sealed, wipeable. Repairable in place.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACT 03 ===================== -->
+<section class="panel act" id="act3" data-section-name="finishes">
+  <span class="act-no">Act 03 — Specimen index</span>
+  <div class="reveal">
+    <div class="col-l">
+      <h2 class="statement statement--sm">Six ways to stop a wall being just a wall.</h2>
+      <div class="swatches" id="swatches" role="group" aria-label="Choose a finish">
+        <button class="sw" type="button" data-m="venetian" aria-pressed="true"><i class="m-venetian"></i></button>
+        <button class="sw" type="button" data-m="limewash" aria-pressed="false"><i class="m-limewash"></i></button>
+        <button class="sw" type="button" data-m="micro" aria-pressed="false"><i class="m-micro"></i></button>
+        <button class="sw" type="button" data-m="tadelakt" aria-pressed="false"><i class="m-tadelakt"></i></button>
+        <button class="sw" type="button" data-m="metallic" aria-pressed="false"><i class="m-metallic"></i></button>
+        <button class="sw" type="button" data-m="roman" aria-pressed="false"><i class="m-roman"></i></button>
+      </div>
+      <p class="spec spec--chalk" id="swName" style="margin-top:.9rem">Venetian plaster · Specimen 001</p>
+    </div>
+
+    <div class="plinth">
+      <div class="pool"></div>
+      <div class="specimen">
+        <div class="base m-venetian" id="indexBase"></div>
+        <div class="light l-dawn"></div><div class="light l-noon"></div>
+        <div class="light l-rake"></div><div class="light l-lamp"></div>
+        <div class="grain grain--trowel"></div><div class="grain grain--tooth"></div>
+        <div class="rake-hi"></div>
+      </div>
+      <div class="cast"></div>
+    </div>
+
+    <div class="col-r">
+      <div class="t-feel"><p class="human" id="swFeel">Lime putty and marble dust, laid in six to eight
+      passes and burnished back to a stone-like sheen. Reads almost flat at midday, then opens into
+      visible depth as the light drops. The one to choose when a room needs to feel older than it is.</p></div>
+      <div class="t-make"><p class="human" id="swMake">Needs a flat, sound substrate — any hollow or
+      patch telegraphs through. Wax-sealed after burnishing, so it wipes clean and can be repaired in
+      place rather than recoated. Not for wet walls in a shower.</p></div>
+      <dl class="specsheet" id="swSpec">
+        <div><dt>Substrate</dt><dd>Skim-coat plasterboard</dd></div>
+        <div><dt>Coats</dt><dd>6–8</dd></div>
+        <div><dt>Sheen</dt><dd>Burnished satin</dd></div>
+        <div><dt>Best in</dt><dd>Hallways, living</dd></div>
+      </dl>
+      <p class="spec" style="margin-top:1.1rem">Colour on this page comes only from the specimen under the light</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACT 04 — BEFORE / AFTER ===================== -->
+<section class="panel act" id="act4" data-section-name="before-after">
+  <span class="act-no">Act 04 — Before and after</span>
+  <div class="ba-split">
+    <div class="ba-split__media">
+      <div class="ba" id="ba">
+        <div class="ba-layer flat">
+          <div class="base w-before"></div>
+          <div class="laps"></div><div class="ghost-frame"></div><div class="marks"></div>
+          <img class="ba-photo" alt="Before — ordinary acrylic wall atmosphere" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80" width="1400" height="875" loading="lazy" decoding="async">
+          <div class="light l-dawn"></div><div class="light l-noon"></div>
+          <div class="light l-rake"></div><div class="light l-lamp"></div>
+          <div class="grain grain--tooth"></div>
+        </div>
+        <div class="ba-layer ba-after">
+          <div class="ba-after-inner">
+            <div class="base m-venetian"></div>
+            <img class="ba-photo" alt="After — mineral finish atmosphere" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80" width="1400" height="875" loading="lazy" decoding="async">
+            <div class="light l-dawn"></div><div class="light l-noon"></div>
+            <div class="light l-rake"></div><div class="light l-lamp"></div>
+            <div class="grain grain--trowel"></div><div class="grain grain--tooth"></div>
+            <div class="rake-hi"></div>
+          </div>
+        </div>
+        <span class="ba-tag ba-tag--l">Before · flat acrylic</span>
+        <span class="ba-tag ba-tag--r">After · Venetian 001</span>
+        <div class="ba-handle" id="baHandle">
+          <button class="ba-grip" id="baGrip" type="button" role="slider"
+                  aria-label="Reveal the finished wall" aria-valuemin="0" aria-valuemax="100"
+                  aria-valuenow="52" aria-valuetext="52% revealed">Drag</button>
+        </div>
+      </div>
+      <p class="spec ba-split__note">Conceptual surface study — both sides lit by the same rail. Real before-and-after photographs drop into these two layers.</p>
+    </div>
+    <div class="ba-split__copy" data-animate="fadeInRight">
+      <h2 class="statement statement--sm">The same wall, before and after, at whatever hour you like.</h2>
+      <div class="t-feel">
+        <p class="human">Drag the divider across. Then move the light rail and
+        drag it again. A before-and-after fixed at one flattering moment tells you very little — the
+        question is whether the change still holds at seven in the morning, and at nine at night.</p>
+      </div>
+      <div class="t-make">
+        <p class="human">The left side is a typical Melbourne interior wall:
+        low-sheen acrylic over two previous colours, a patched hook line, roller laps you can pick out
+        in raking light, and scuffing along the skirting. Everything visible on that side has to be
+        made flat before a mineral finish goes anywhere near it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RULE 5: VOID → PHOTOGRAPHIC ============ -->
+<div class="mode-break">
+  <span class="spec spec--chalk">Photographic mode — Melbourne rooms</span>
+  <span class="spec" id="proofState">Directional case imagery below — verified proof requires photograph credit on file.</span>
+</div>
+
+<section class="panel rooms" id="rooms" data-section-name="rooms">
+  <div id="roomList"></div>
+</section>
+
+<!-- ===================== ACT 05 ===================== -->
+<section class="panel act" id="act5" data-section-name="colour">
+  <span class="act-no">Act 05 — Choosing colour</span>
+  <div class="act-lede">
+    <h2 class="statement statement--sm">The paint chip lied to you. Here is exactly how.</h2>
+    <p class="human">One colour, four hours. Nothing about the paint has changed — only the light reaching it. This is why a sample the size of a business card, held up under showroom fluorescents, tells you almost nothing about your own hallway.</p>
+  </div>
+  <div class="hours">
+    <div class="hour">
+      <div class="hour-sw"><div class="base"></div><div class="light l-dawn" style="opacity:1"></div><div class="grain grain--tooth"></div></div>
+      <h3>07:10 — south facing</h3>
+      <p>Blue cast off open sky. Warm colours go muddy and everything reads a shade darker.</p>
+    </div>
+    <div class="hour">
+      <div class="hour-sw"><div class="base"></div><div class="light l-noon" style="opacity:1"></div><div class="grain grain--tooth"></div></div>
+      <h3>12:40 — direct sun</h3>
+      <p>Bleaching. Undertones vanish and two very different colours can look identical.</p>
+    </div>
+    <div class="hour">
+      <div class="hour-sw"><div class="base"></div><div class="light l-rake" style="opacity:1"></div><div class="grain grain--tooth"></div></div>
+      <h3>16:20 — low west sun</h3>
+      <p>The hour that sells the job. Texture casts micro-shadow and depth appears.</p>
+    </div>
+    <div class="hour">
+      <div class="hour-sw"><div class="base"></div><div class="light l-lamp" style="opacity:1"></div><div class="grain grain--tooth"></div></div>
+      <h3>20:50 — lamps only</h3>
+      <p>2700K globes push everything warm. This is when you actually live in the room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACT 06 — THE DOCKET ===================== -->
+<section class="panel act" id="act6" data-section-name="docket">
+  <span class="act-no">Act 06 — Docket</span>
+  <div class="close">
+    <div>
+      <h2 class="statement statement--sm">We'll trowel you a real board and leave it on your wall for a week.</h2>
+      <div class="t-feel"><p class="human" style="margin-top:1.1rem">Not a swatch. An A4 specimen of
+      the actual finish, applied by the person who would do your room, in the colour you keep coming
+      back to — so you can watch it through a whole day in your own light before anyone quotes anything.</p></div>
+      <div class="t-make"><p class="human" style="margin-top:1.1rem">Made to order in the same
+      material and the same number of coats as the wall would get, so what you are holding is the
+      wall. Four to five working days. No charge, no site visit required, and no obligation to
+      proceed to quote.</p></div>
+      <p style="margin-top:1.8rem">
+        <button class="pill" type="button">Complete docket</button>
+        <a class="btn-ghost" href="#act3">Change finish</a>
+      </p>
+    </div>
+
+    <div class="docket">
+      <div class="docket-head">
+        <h3>Specimen docket</h3>
+        <span class="spec">No. 001</span>
+      </div>
+      <hr class="docket-rule">
+      <div class="line"><span>Finish</span><span id="dkFinish">Burnished Venetian</span></div>
+      <div class="line"><span>Board size</span><span>A4 · 210 × 297</span></div>
+      <div class="line"><span>Coats as applied</span><span id="dkCoats">6–8</span></div>
+      <div class="line"><span>Left on site</span><span>7 days</span></div>
+      <div class="line"><span>Lead time</span><span>4–5 working days</span></div>
+      <hr class="docket-rule">
+      <div class="line"><span>Cost</span><span>No charge</span></div>
+      <hr class="docket-rule">
+      <div class="docket-field"><span>Rooms</span><span>—</span></div>
+      <div class="docket-field"><span>Which way they face</span><span>—</span></div>
+      <div class="docket-field"><span>When you're home</span><span>—</span></div>
+      <div class="docket-field"><span>Email</span><span>—</span></div>
+      <div class="barcode" aria-hidden="true"></div>
+      <p class="barcode-no">PM-001-VEN</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Painter Melbourne — residential specialist finishes, metropolitan Melbourne</span>
+  <span>Concept direction · surfaces are staged specimens unless marked photographed</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollify/1.0.21/jquery.scrollify.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var root=document.documentElement;
+  var knob=document.getElementById('knob'), track=document.getElementById('track'), rail=document.getElementById('rail');
+  var mBtns=[].slice.call(document.querySelectorAll('#railM button'));
+
+  var h=0.62, queued=false;
+  var ANCHORS=[0,0.36,0.62,1], LABEL=['07:10','12:40','16:20','20:50'];
+  var VTEXT=['7:10am','12:40pm','4:20pm','8:50pm'], VARS=['--dawn','--noon','--rake','--lamp'];
+
+  function weights(x){
+    var w=[0,0,0,0],t=0,i,d,span;
+    for(i=0;i<4;i++){
+      span=(i===0||i===3)?0.40:0.32;
+      d=Math.abs(x-ANCHORS[i])/span;
+      w[i]=d<1?(1-d):0; t+=w[i];
+    }
+    if(t===0){w[2]=1;t=1;}
+    for(i=0;i<4;i++) w[i]=w[i]/t;
+    return w;
+  }
+  function nearest(x){var b=0,bd=9,i,d;for(i=0;i<4;i++){d=Math.abs(x-ANCHORS[i]);if(d<bd){bd=d;b=i;}}return b;}
+  function paint(){
+    queued=false;
+    var w=weights(h),i,n;
+    root.style.setProperty('--h',h.toFixed(3));
+    for(i=0;i<4;i++) root.style.setProperty(VARS[i],w[i].toFixed(3));
+    n=nearest(h);
+    if(knob){
+      knob.textContent=LABEL[n];
+      knob.style.top=(h*100).toFixed(2)+'%';
+      knob.setAttribute('aria-valuenow',Math.round(h*100));
+      knob.setAttribute('aria-valuetext',VTEXT[n]);
+    }
+    for(i=0;i<mBtns.length;i++) mBtns[i].setAttribute('aria-pressed',i===n?'true':'false');
+  }
+  function set(v){h=v<0?0:(v>1?1:v); if(!queued){queued=true;requestAnimationFrame(paint);}}
+
+  var dragging=false;
+  function fromEvent(e){var r=track.getBoundingClientRect();set((e.clientY-r.top)/r.height);}
+  if(rail){
+    rail.addEventListener('pointerdown',function(e){dragging=true;rail.setPointerCapture(e.pointerId);fromEvent(e);});
+    rail.addEventListener('pointermove',function(e){if(dragging)fromEvent(e);});
+    rail.addEventListener('pointerup',function(){dragging=false;});
+    rail.addEventListener('pointercancel',function(){dragging=false;});
+  }
+  if(knob){
+    knob.addEventListener('keydown',function(e){
+      var k=e.key,n;
+      if(k==='ArrowUp'||k==='ArrowLeft'){set(h-0.04);e.preventDefault();}
+      else if(k==='ArrowDown'||k==='ArrowRight'){set(h+0.04);e.preventDefault();}
+      else if(k==='Home'){set(0);e.preventDefault();}
+      else if(k==='End'){set(1);e.preventDefault();}
+      else if(k==='PageUp'){n=Math.max(0,nearest(h)-1);set(ANCHORS[n]);e.preventDefault();}
+      else if(k==='PageDown'){n=Math.min(3,nearest(h)+1);set(ANCHORS[n]);e.preventDefault();}
+    });
+  }
+  mBtns.forEach(function(b){b.addEventListener('click',function(){set(parseFloat(b.dataset.h));});});
+
+  // ---- rule 2: parallel tracks ------------------------------------------
+  var tFeel=document.getElementById('tFeel'), tMake=document.getElementById('tMake');
+  function setTrack(make){
+    document.body.classList.toggle('mode-make',make);
+    tFeel.setAttribute('aria-pressed',make?'false':'true');
+    tMake.setAttribute('aria-pressed',make?'true':'false');
+  }
+  tFeel.addEventListener('click',function(){setTrack(false);});
+  tMake.addEventListener('click',function(){setTrack(true);});
+
+  /* =======================================================================
+     REAL PROJECT DATA — the only place case studies are edited.
+
+     Fill one object per real Painter Melbourne job and set verified:true.
+     A case only renders as proof when BOTH photographedAt and photographer
+     are present AND verified is true. Anything else renders dimmed, dashed
+     and labelled "Awaiting real project" — there is deliberately no way to
+     stamp a case as photographed without supplying the credit.
+
+     Required per case:
+       title          what happened, in a sentence
+       suburb         Melbourne suburb
+       finish         which specimen from the index above
+       scope          what was actually done
+       duration       days or weeks on site
+       feel           1 short paragraph — the room (FEEL track)
+       make           1 short paragraph — substrate, prep, disruption (MAKE)
+       photographedAt time and month the photo was taken, e.g. "16:12, March"
+       photographer   credit, or "in-house"
+       beforeImage    URL or local path to the BEFORE photograph (optional)
+       afterImage     URL or local path to the AFTER photograph (optional)
+                      supply both and the case renders as a draggable
+                      before/after; supply neither and it renders a single
+                      frame; the rendered surface stands in either way
+       swatch         r1 | r2 | r3 — stand-in until the real photo is dropped in
+       verified       true only once the above are real
+     ======================================================================= */
+  var CASES = [
+    { title:"Gore Street salon — chalk limewash over living fabric",
+      suburb:"Fitzroy", finish:"Artisan limewash", scope:"Dual living-dining planes", duration:"12 days",
+      feel:"Narrow terrace light finally has something to move through. The walls read soft at noon and deepen under lamps — guests reach out without thinking.",
+      make:"Failing acrylic stripped to sound plaster, breathable lime repairs, chalk-tone limewash in cross-hatch coats. House stayed usable upstairs.",
+      photographedAt:"", photographer:"",
+      beforeImage:"https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80",
+      afterImage:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80",
+      swatch:"r1", verified:false },
+    { title:"Domain curved gallery — burnished Marmorino",
+      suburb:"South Yarra", finish:"Venetian plaster", scope:"Radiused hallway + foyer", duration:"14 days",
+      feel:"Late sun walks the curve. The plaster holds art-wall light without hotspots — the room feels older and quieter than its renovation year.",
+      make:"Three hand-troweled layers with Carrara dust, stainless burnish, zero egress dust to neighbours. Joinery spray sealed in clean-room enclosure.",
+      photographedAt:"", photographer:"",
+      beforeImage:"https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1400&q=80",
+      afterImage:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
+      swatch:"r2", verified:false },
+    { title:"Bayside pavilion — continuous microcement wet zone",
+      suburb:"Brighton", finish:"Quartz microcement", scope:"Ensuite walls + tub surround", duration:"8 days",
+      feel:"No grout lines. Salt air and steam meet one seamless plane that still reads warm under 2700K lamps.",
+      make:"3mm continuous system over sound substrate, hydrophobic cure schedule, marine-grade timber exterior separate package.",
+      photographedAt:"", photographer:"",
+      beforeImage:"https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1400&q=80",
+      afterImage:"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1400&q=80",
+      swatch:"r3", verified:false }
+  ];
+
+  function isProof(c){
+    return c.verified === true &&
+           typeof c.photographedAt === 'string' && c.photographedAt.trim() !== '' &&
+           typeof c.photographer === 'string' && c.photographer.trim() !== '';
+  }
+
+  function esc(t){
+    return String(t == null ? '' : t).replace(/[&<>"]/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];
+    });
+  }
+
+  // A case with both photographs renders as a draggable before/after.
+  // With one or none, the rendered surface stands in — the layout is the
+  // same either way, so dropping real photos in changes nothing structural.
+  function lights(){
+    return '<div class="light l-dawn"></div><div class="light l-noon"></div>'+
+           '<div class="light l-rake"></div><div class="light l-lamp"></div>';
+  }
+  function visual(c,i){
+    var hasBoth = c.beforeImage && c.afterImage;
+    if(hasBoth){
+      return '<div class="ba" data-ba style="--wipe:52%">'+
+        '<div class="ba-layer flat">'+
+          '<div class="base w-before"></div><div class="laps"></div>'+
+          '<div class="ghost-frame"></div><div class="marks"></div>'+
+          '<img class="ba-photo" alt="Before" src="'+esc(c.beforeImage)+'">'+
+          lights()+'<div class="grain grain--tooth"></div>'+
+        '</div>'+
+        '<div class="ba-layer ba-after">'+
+          '<div class="ba-after-inner">'+
+            '<div class="base '+esc(c.swatch||'r1')+'"></div>'+
+            '<img class="ba-photo" alt="After" src="'+esc(c.afterImage)+'">'+
+            lights()+'<div class="grain grain--trowel"></div><div class="rake-hi"></div>'+
+          '</div>'+
+        '</div>'+
+        '<span class="ba-tag ba-tag--l">Before</span>'+
+        '<span class="ba-tag ba-tag--r">After</span>'+
+        '<div class="ba-handle"><button class="ba-grip" type="button" role="slider" '+
+          'aria-label="Reveal the finished wall" aria-valuemin="0" aria-valuemax="100" '+
+          'aria-valuenow="52" aria-valuetext="52% revealed">Drag</button></div>'+
+      '</div>';
+    }
+    return '<div class="room-shot">'+
+      '<div class="base '+esc(c.swatch||'r1')+'" style="position:absolute;inset:0"></div>'+
+      (c.afterImage ? '<img class="ba-photo" alt="" src="'+esc(c.afterImage)+'">' : '')+
+      lights()+'<div class="grain grain--tooth"></div><div class="rake-hi"></div>'+
+    '</div>';
+  }
+
+  function renderCases(){
+    var list=document.getElementById('roomList');
+    var state=document.getElementById('proofState');
+    if(!list) return;
+    var proven=0;
+
+    list.innerHTML = CASES.map(function(c,i){
+      var proof=isProof(c), n=i+1;
+      if(proof) proven++;
+      var facts=[c.suburb,c.finish,c.scope,c.duration]
+        .filter(function(f){return f && String(f).trim()!=='';})
+        .map(function(f){return '<span>'+esc(f)+'</span>';}).join('');
+
+      return '<article class="room'+(proof?'':' room--pending')+'">'+
+        '<div class="plinth">'+visual(c,i)+'</div>'+
+        '<div>'+
+          '<h3 class="statement statement--sm">'+
+            (c.title ? esc(c.title) : 'Case '+n+' — title to come')+'</h3>'+
+          '<div class="t-feel"><p class="human" style="margin-top:.9rem">'+
+            (c.feel ? esc(c.feel) : 'Short paragraph on what the room became. Written for the FEEL track.')+
+          '</p></div>'+
+          '<div class="t-make"><p class="human" style="margin-top:.9rem">'+
+            (c.make ? esc(c.make) : 'Substrate, preparation, how long the house was disrupted. Written for the MAKE track.')+
+          '</p></div>'+
+          (facts ? '<div class="facts">'+facts+'</div>' : '')+
+          (proof
+            ? '<span class="provenance">Photographed · '+esc(c.photographedAt)+' · '+esc(c.photographer)+'</span>'
+            : '<span class="provenance provenance--pending">Not yet supplied — no photograph credit on file</span>')+
+        '</div>'+
+      '</article>';
+    }).join('');
+
+    if(state){
+      state.innerHTML = proven === CASES.length
+        ? 'Everything above this line is a staged specimen. Everything below is a job we did.'
+        : '<span class="pending-count">'+proven+' of '+CASES.length+
+          ' cases verified</span> — imagery is directional until photograph credit is on file';
+    }
+  }
+  renderCases();
+
+  // ---- the wipe. One controller, any number of before/afters. ----------
+  function bindWipe(ba){
+    var grip=ba.querySelector('.ba-grip'), handle=ba.querySelector('.ba-handle');
+    var after=ba.querySelector('.ba-after');
+    var inner=ba.querySelector('.ba-after-inner');
+    var w=52, pending=false, dragging=false;
+
+    function measure(){
+      ba.style.setProperty('--ba-w', ba.getBoundingClientRect().width + 'px');
+    }
+    function apply(){
+      pending=false;
+      measure();
+      ba.style.setProperty('--wipe', w.toFixed(2) + '%');
+      if(handle) handle.style.left = w.toFixed(2) + '%';
+      if(after) after.style.left = w.toFixed(2) + '%';
+      if(inner) inner.style.transform = 'translateX(-' + w.toFixed(2) + '%)';
+      if(grip){
+        grip.setAttribute('aria-valuenow', Math.round(w));
+        grip.setAttribute('aria-valuetext', Math.round(w) + '% revealed');
+      }
+    }
+    function setW(v){
+      w = v < 0 ? 0 : (v > 100 ? 100 : v);
+      if(!pending){ pending = true; requestAnimationFrame(apply); }
+    }
+    function fromEvent(e){
+      var r = ba.getBoundingClientRect();
+      setW(((e.clientX - r.left) / r.width) * 100);
+    }
+    measure();
+    window.addEventListener('resize', function(){ measure(); apply(); });
+
+    ba.addEventListener('pointerdown', function(e){
+      if(e.target.closest('a, .ba-tag')) return;
+      dragging = true;
+      try{ ba.setPointerCapture(e.pointerId); }catch(err){}
+      fromEvent(e);
+      e.preventDefault();
+    });
+    ba.addEventListener('pointermove', function(e){ if(dragging) fromEvent(e); });
+    ba.addEventListener('pointerup', function(){ dragging = false; });
+    ba.addEventListener('pointercancel', function(){ dragging = false; });
+    if(grip){
+      grip.addEventListener('keydown', function(e){
+        var k = e.key;
+        if(k === 'ArrowLeft'){ setW(w - 4); e.preventDefault(); }
+        else if(k === 'ArrowRight'){ setW(w + 4); e.preventDefault(); }
+        else if(k === 'Home'){ setW(0); e.preventDefault(); }
+        else if(k === 'End'){ setW(100); e.preventDefault(); }
+      });
+      grip.addEventListener('click', function(e){ e.stopPropagation(); });
+    }
+    apply();
+  }
+  [].slice.call(document.querySelectorAll('.ba')).forEach(bindWipe);
+
+  // ---- rule 3 + 4: catalogue selection drives detail, specs and docket ---
+  var MATERIALS={
+    venetian:{n:'Venetian plaster · Specimen 001',c:'#C4A98A',code:'PM-001-VEN',label:'Burnished Venetian',coats:'6–8',
+      feel:'Lime putty and marble dust, laid in six to eight passes and burnished back to a stone-like sheen. Reads almost flat at midday, then opens into visible depth as the light drops. The one to choose when a room needs to feel older than it is.',
+      make:'Needs a flat, sound substrate — any hollow or patch telegraphs through. Wax-sealed after burnishing, so it wipes clean and can be repaired in place rather than recoated. Not for wet walls in a shower.',
+      spec:[['Substrate','Skim-coat plasterboard'],['Coats','6–8'],['Sheen','Burnished satin'],['Best in','Hallways, living']]},
+    limewash:{n:'Limewash & French wash · Specimen 002',c:'#CFD0C4',code:'PM-002-LIM',label:'Limewash',coats:'2–3',
+      feel:'Slaked lime brushed on in cross-hatched coats, so the surface clouds and moves as the day turns. The finish that most looks like weather rather than paint.',
+      make:'Breathable, which is why it suits solid brick that still needs to dry outward. Chalks slightly if rubbed hard, so not ideal along a hallway at shoulder height. Recoats onto itself with no stripping.',
+      spec:[['Substrate','Mineral, brick, render'],['Coats','2–3'],['Sheen','Chalk matte'],['Best in','Bedrooms, heritage']]},
+    micro:{n:'Microcement · Specimen 003',c:'#9A9C98',code:'PM-003-MIC',label:'Microcement',coats:'4 + sealer',
+      feel:'A seamless concrete skim taken over floors, benchtops and wet areas with no join and no grout line. The only finish here you can walk on.',
+      make:'Substrate must be level and crack-stable before anything goes down — most of the cost is preparation, not coating. Two-part sealer for traffic. Hairline movement cracks are possible over timber subfloors.',
+      spec:[['Substrate','Screed, tile, ply'],['Coats','4 + sealer'],['Sheen','Matte to satin'],['Best in','Floors, kitchens']]},
+    tadelakt:{n:'Tadelakt · Specimen 004',c:'#7D9089',code:'PM-004-TAD',label:'Tadelakt',coats:'2, stone-polished',
+      feel:'Moroccan polished lime, compressed with a river stone and sealed with olive soap. A shower room with no grout line anywhere in it.',
+      make:'Genuinely waterproof when done properly, and genuinely unforgiving when not. Applied over sand-cement render, never plasterboard. Resoaped every couple of years, which takes an hour.',
+      spec:[['Substrate','Sand-cement render'],['Coats','2, stone-polished'],['Sheen','Soft polish'],['Best in','Bathrooms, basins']]},
+    metallic:{n:'Metallic & patina · Specimen 005',c:'#C39A5C',code:'PM-005-MET',label:'Metallic patina',coats:'3 + reactant',
+      feel:'Reactive coatings carrying real metal particles, then oxidised on the wall. It keeps developing for weeks after we hand over, so the finish you sign off is not quite the one you end up living with.',
+      make:'The reaction is controllable but not identical twice, so sample boards are essential rather than optional. Sealed once the patina reaches the point you want. Feature areas only — it is not a whole-house finish.',
+      spec:[['Substrate','Primed board'],['Coats','3 + reactant'],['Sheen','Variable'],['Best in','Feature walls, joinery']]},
+    roman:{n:'Roman & clay plaster · Specimen 006',c:'#B08A6C',code:'PM-006-ROM',label:'Roman clay',coats:'2–3',
+      feel:'Unfired clay and fine aggregate, trowelled thin and left dead matte. The one that most reads as a material rather than a colour.',
+      make:'The most forgiving finish on uneven heritage walls — it absorbs minor movement instead of showing it. Not water-resistant, and marks will show in a hallway. Patches back invisibly, which most finishes do not.',
+      spec:[['Substrate','Plasterboard, render'],['Coats','2–3'],['Sheen','Dead matte'],['Best in','Living, studies']]}
+  };
+
+  var indexBase=document.getElementById('indexBase'), swName=document.getElementById('swName');
+  var swFeel=document.getElementById('swFeel'), swMake=document.getElementById('swMake'), swSpec=document.getElementById('swSpec');
+  var dkFinish=document.getElementById('dkFinish'), dkCoats=document.getElementById('dkCoats');
+  var barNo=document.querySelector('.barcode-no');
+  var sws=[].slice.call(document.querySelectorAll('.sw'));
+
+  sws.forEach(function(b){
+    b.addEventListener('click',function(){
+      var m=MATERIALS[b.dataset.m];
+      if(!m) return;
+      sws.forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false');});
+      indexBase.className='base m-'+b.dataset.m;
+      swName.textContent=m.n;
+      swFeel.textContent=m.feel;
+      swMake.textContent=m.make;
+      swSpec.innerHTML=m.spec.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('');
+      // rule 4 — the docket is a live artifact, not a static form
+      dkFinish.textContent=m.label;
+      dkCoats.textContent=m.coats;
+      barNo.textContent=m.code;
+      root.style.setProperty('--specimen',m.c);
+    });
+  });
+
+
+
+
+  // ---- ELEMENTIS destination world -------------------------------------
+  (function(){
+    var DEST = [
+      {
+        id:'melbourne', title:'Melbourne', place:'Specimen 01', n:'01',
+        image:'public/hero-painter-melbourne.jpg',
+        thumb:'public/hero-painter-melbourne.jpg',
+        feel:'Mineral finishes for rooms that change with the light — south morning to lamp hour, on one continuous surface.',
+        make:'Six specialised finishes. Coats, cure and disruption stated plainly. Same specimen language on site.',
+        panelFeel:'A Melbourne interior is never one light. The finish has to hold south morning, west rake and lamp hour without becoming a different colour each time.',
+        panelMake:'Start with orientation and substrate, not a chip. The specimen under the rail is the same chemistry we take to site.',
+        more:'#act1'
+      },
+      {
+        id:'room', title:'The room', place:'Carlton', n:'02',
+        image:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
+        thumb:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=70',
+        feel:'South light, west rake, evening lamps — Melbourne rooms change hour by hour. A finish has to hold all of them.',
+        make:'Before coats: orientation, substrate, and which planes take the hardest light. That reading decides the finish.',
+        panelFeel:'Quiet rooms tell the truth about a surface. Watch the wall from the doorway, then from the seat by the window — if it only works in one of those, it is not finished.',
+        panelMake:'Map the planes that rake. Feature walls facing hard light need more burnish passes; soft southern rooms can stay chalkier.',
+        more:'#act2'
+      },
+      {
+        id:'surface', title:'Surface', place:'Material', n:'03',
+        image:'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1600&q=80',
+        thumb:'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=400&q=70',
+        feel:'Trowel marks, chalk bloom, burnished satin — mineral finishes scatter light through material as you move.',
+        make:'Lime putty, marble dust, clay and microcement in counted coats. The sample board is the same chemistry as the wall.',
+        panelFeel:'Depth you can read with your hand. The wall should change as you walk past it, not sit as a flat film.',
+        panelMake:'Counted coats, stated cure. The board we leave is not a brochure — it is the wall in miniature.',
+        more:'#act3'
+      },
+      {
+        id:'hour', title:'The hour', place:'Light', n:'04',
+        image:'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80',
+        thumb:'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=400&q=70',
+        feel:'Same colour. Four different walls. Drag the light rail — acrylic holds one note while plaster opens.',
+        make:'Porous mineral coats scatter; sealed acrylic reflects. Breathability and repairability follow from that physics.',
+        panelFeel:'A before-and-after frozen at golden hour tells you almost nothing. Ask what the wall does at seven in the morning and nine at night.',
+        panelMake:'Move the rail. The physics is the sales pitch — and the reason mineral work costs what it costs.',
+        more:'#act4'
+      },
+      {
+        id:'keep', title:'The keep', place:'Living', n:'05',
+        image:'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1600&q=80',
+        thumb:'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=400&q=70',
+        feel:'Hallways, wet rooms, heritage brick — each fabric asks for a different mineral answer. Still right at 9pm.',
+        make:'Scope, days on site, and disruption stated before quote. Verified photography replaces directional stills as it lands.',
+        panelFeel:'The job ends when the room still feels right after a week of living in it — not when the last coat looks good in a photograph.',
+        panelMake:'Disruption, days and substrate honesty before anyone quotes. Then a real board on your wall for a week.',
+        more:'#act6'
+      }
+    ];
+
+    var world = document.querySelector('.el-world');
+    if(!world) return;
+
+    var stage = document.getElementById('elStage');
+    var baseImg = document.getElementById('elBaseImg');
+    var incoming = document.getElementById('elIncoming');
+    var strips = document.getElementById('elStrips');
+    var titleMask = document.getElementById('elTitleMask');
+    var titleTrack = document.getElementById('elTitleTrack');
+    var titleA = document.getElementById('elTitleA');
+    var titleB = document.getElementById('elTitleB');
+    var ledeFeel = document.getElementById('elLedeFeel');
+    var ledeMake = document.getElementById('elLedeMake');
+    var place = document.getElementById('elPlace');
+    var indexEl = document.getElementById('elIndex');
+    var thumbs = document.getElementById('elThumbs');
+    var cursor = document.getElementById('elCursor');
+    var openBtn = document.getElementById('elOpen');
+    var closeBtn = document.getElementById('elClose');
+    var panel = document.getElementById('elPanel');
+    var panelScroll = document.getElementById('elPanelScroll');
+    var panelShot = document.getElementById('elPanelShot');
+    var panelLabel = document.getElementById('elPanelLabel');
+    var panelKicker = document.getElementById('elPanelKicker');
+    var panelTitle = document.getElementById('elPanelTitle');
+    var panelFeel = document.getElementById('elPanelFeel');
+    var panelMake = document.getElementById('elPanelMake');
+    var panelMore = document.getElementById('elPanelMore');
+
+    var index = 0;
+    var busy = false;
+    var STRIP_N = 16;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pad(n){ return n; }
+
+    function renderThumbs(){
+      thumbs.innerHTML = DEST.map(function(d,i){
+        return '<button type="button" data-i="'+i+'"'+(i===index?' class="is-on"':'')+
+          ' aria-label="Destination '+d.n+': '+d.title+'">'+
+          '<img src="'+d.thumb+'" alt="" width="144" height="96" loading="lazy" decoding="async">'+
+          '<span>'+d.n+'</span></button>';
+      }).join('');
+    }
+
+    function applyCopy(d, instant){
+      if(!instant){
+        ledeFeel.classList.add('is-out');
+        ledeMake.classList.add('is-out');
+      }
+      var paint = function(){
+        ledeFeel.textContent = d.feel;
+        ledeMake.textContent = d.make;
+        place.textContent = d.place;
+        indexEl.textContent = d.n + ' — 05';
+        ledeFeel.classList.remove('is-out');
+        ledeMake.classList.remove('is-out');
+        panelShot.src = d.image;
+        panelLabel.textContent = d.place + ' · ' + d.n;
+        panelKicker.textContent = d.n + '  |  ' + d.place;
+        panelTitle.textContent = d.title;
+        panelFeel.textContent = d.panelFeel;
+        panelMake.textContent = d.panelMake;
+        panelMore.setAttribute('href', d.more);
+      };
+      if(instant) paint();
+      else setTimeout(paint, 180);
+    }
+
+    function buildStrips(src){
+      strips.style.setProperty('--n', STRIP_N);
+      var html = '';
+      for(var i=0;i<STRIP_N;i++){
+        html += '<div class="el-strip" style="--i:'+i+';--n:'+STRIP_N+'">'+
+          '<img src="'+src+'" alt="" decoding="async"></div>';
+      }
+      strips.innerHTML = html;
+    }
+
+    function goTo(next, fromThumb){
+      if(busy || next===index || next<0 || next>=DEST.length) return;
+      var d = DEST[next];
+      busy = true;
+      world.classList.add('is-animating');
+
+      // masked title swap
+      titleB.textContent = d.title;
+      titleMask.classList.add('is-swap');
+
+      applyCopy(d, false);
+
+      if(reduce){
+        baseImg.src = d.image;
+        titleA.textContent = d.title;
+        titleMask.classList.remove('is-swap');
+        titleTrack.style.transition = 'none';
+        titleTrack.style.transform = 'translateY(0)';
+        void titleTrack.offsetWidth;
+        titleTrack.style.transition = '';
+        index = next;
+        renderThumbs();
+        busy = false;
+        world.classList.remove('is-animating');
+        return;
+      }
+
+      buildStrips(d.image);
+      incoming.hidden = false;
+      world.classList.remove('is-animating');
+      void strips.offsetWidth;
+      world.classList.add('is-animating');
+
+      Array.prototype.forEach.call(thumbs.querySelectorAll('button'), function(b){
+        b.classList.toggle('is-on', Number(b.dataset.i)===next);
+      });
+
+      setTimeout(function(){
+        baseImg.src = d.image;
+        incoming.hidden = true;
+        strips.innerHTML = '';
+        titleA.textContent = d.title;
+        titleMask.classList.remove('is-swap');
+        titleTrack.style.transition = 'none';
+        titleTrack.style.transform = 'translateY(0)';
+        void titleTrack.offsetWidth;
+        titleTrack.style.transition = '';
+        index = next;
+        renderThumbs();
+        busy = false;
+        world.classList.remove('is-animating');
+      }, 1100);
+    }
+
+    function openPanel(){
+      world.classList.add('is-open');
+      panel.setAttribute('aria-hidden','false');
+      panelScroll.scrollTop = 0;
+    }
+    function closePanel(){
+      world.classList.remove('is-open');
+      panel.setAttribute('aria-hidden','true');
+    }
+
+    // init
+    applyCopy(DEST[0], true);
+    renderThumbs();
+
+    thumbs.addEventListener('click', function(e){
+      var btn = e.target.closest('button[data-i]');
+      if(!btn) return;
+      if(world.classList.contains('is-open')) closePanel();
+      goTo(Number(btn.dataset.i), true);
+    });
+
+    openBtn.addEventListener('click', function(e){ e.stopPropagation(); openPanel(); });
+    closeBtn.addEventListener('click', function(){ closePanel(); });
+
+    // Horizontal drag / swipe changes destination; click opens panel
+    var dragX = null, dragY = null, didSwipe = false;
+    stage.addEventListener('pointerdown', function(e){
+      if(e.target.closest('.el-thumbs, .el-open, .el-panel, a, button')) return;
+      if(world.classList.contains('is-open')) return;
+      dragX = e.clientX; dragY = e.clientY; didSwipe = false;
+      try{ stage.setPointerCapture(e.pointerId); }catch(err){}
+    });
+    stage.addEventListener('pointermove', function(e){
+      if(dragX === null || busy) return;
+      var dx = e.clientX - dragX;
+      var dy = e.clientY - dragY;
+      if(Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.15){
+        didSwipe = true;
+        var next = dx < 0 ? index + 1 : index - 1;
+        dragX = null; dragY = null;
+        goTo(next);
+      }
+    });
+    stage.addEventListener('pointerup', function(e){
+      if(dragX !== null && !didSwipe && !world.classList.contains('is-open')){
+        if(Math.abs(e.clientX - dragX) < 8 && Math.abs(e.clientY - dragY) < 8){
+          openPanel();
+        }
+      }
+      dragX = null; dragY = null; didSwipe = false;
+    });
+    stage.addEventListener('pointercancel', function(){
+      dragX = null; dragY = null; didSwipe = false;
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key==='Escape' && world.classList.contains('is-open')){ closePanel(); return; }
+      if(world.classList.contains('is-open')) return;
+      if(e.key==='ArrowRight') goTo(index+1);
+      if(e.key==='ArrowLeft') goTo(index-1);
+    });
+
+    // Explore cursor
+    var fine = window.matchMedia('(pointer:fine)').matches;
+    if(fine && cursor){
+      stage.addEventListener('pointerenter', function(){ world.classList.add('is-hot'); });
+      stage.addEventListener('pointerleave', function(){ world.classList.remove('is-hot'); });
+      stage.addEventListener('pointermove', function(e){
+        cursor.style.transform = 'translate3d('+e.clientX+'px,'+e.clientY+'px,0)';
+      });
+    }
+  })();
+
+  function syncChapters(panel){
+    if(!panel) return;
+    var n = null;
+    var on = panel.querySelector('.chapter-thumbs a.is-on');
+    if(on) n = on.getAttribute('data-chapter');
+    if(!n){
+      var map = {hero:'01','beat-room':'02','beat-surface':'03','beat-hour':'04','beat-keep':'05'};
+      n = map[panel.getAttribute('data-section-name')] || null;
+    }
+    if(!n) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.chapter-thumbs a'), function(a){
+      a.classList.toggle('is-on', a.getAttribute('data-chapter') === n);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-chapter-index]'), function(el){
+      el.textContent = n + ' — 05';
+    });
+  }
+
+  // ---- ScrollifyJS + Animate.css ---------------------------------------
+  function playAnim(panel){
+    if(!panel) return;
+    var nodes=panel.querySelectorAll('[data-animate]');
+    Array.prototype.forEach.call(nodes,function(el,i){
+      var name=el.getAttribute('data-animate')||'fadeInUp';
+      el.classList.remove('animate__animated','animate__'+name);
+      el.style.setProperty('animation-delay',(i*0.08)+'s');
+      void el.offsetWidth;
+      el.classList.add('animate__animated','animate__'+name);
+    });
+    var extras=panel.querySelectorAll('.statement, .dest-title, .hero-title, .dest-copy, .human, .plinth, .docket, .story-tile, .test-cap, .specsheet');
+    Array.prototype.forEach.call(extras,function(el,i){
+      if(el.hasAttribute('data-animate')) return;
+      el.classList.remove('animate__animated','animate__fadeInUp');
+      el.style.setProperty('animation-delay',(0.05+i*0.05)+'s');
+      void el.offsetWidth;
+      el.classList.add('animate__animated','animate__fadeInUp');
+    });
+  }
+
+  function enableScrollify(){
+    if(typeof window.jQuery==='undefined' || !jQuery.scrollify) return;
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mobile=window.matchMedia('(max-width: 900px)').matches;
+    if(reduce || mobile){
+      try{ if(jQuery.scrollify.isDisabled && !jQuery.scrollify.isDisabled()) jQuery.scrollify.destroy(); }catch(e){}
+      try{ jQuery.scrollify.destroy(); }catch(e){}
+      document.documentElement.classList.remove('is-scrollify');
+      Array.prototype.forEach.call(document.querySelectorAll('[data-animate]'),function(el){ el.style.opacity='1'; });
+      return;
+    }
+    document.documentElement.classList.add('is-scrollify');
+    jQuery.scrollify({
+      section:'.panel',
+      sectionName:'section-name',
+      interstitialSection:'.mode-break,footer',
+      easing:'easeOutExpo',
+      scrollSpeed:900,
+      offset:0,
+      scrollbars:true,
+      setHeights:true,
+      overflowScroll:true,
+      updateHash:true,
+      touchScroll:true,
+      standardScrollElements:'.ba, .rail, .rail-m, .docket, .track-switch, .swatches, .el-panel, .el-panel__scroll',
+      before:function(){
+        Array.prototype.forEach.call(document.querySelectorAll('.panel'),function(p){ p.classList.remove('is-active'); });
+      },
+      after:function(i, panels){
+        var panel = panels[i] && panels[i][0] ? panels[i][0] : null;
+        if(panel){ panel.classList.add('is-active'); playAnim(panel); syncChapters(panel); }
+      },
+      afterRender:function(){
+        var first=document.querySelector('.panel');
+        if(first){ first.classList.add('is-active'); playAnim(first); syncChapters(first); }
+      }
+    });
+  }
+
+  enableScrollify();
+  var resizeTimer;
+  window.addEventListener('resize',function(){
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(enableScrollify,220);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'),function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href');
+      if(!id || id==='#') return;
+      if(a.closest('.track-switch')) return;
+      if(document.documentElement.classList.contains('is-scrollify') && window.jQuery && jQuery.scrollify){
+        e.preventDefault();
+        try{ jQuery.scrollify.move(id); }catch(err){ location.hash=id; }
+      }
+    });
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>
