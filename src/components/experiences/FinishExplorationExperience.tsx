@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TimeOfDay, FinishItem } from '../../types';
 import { FINISHES_DATA } from '../../data/finishesData';
 import { REAL_PROJECTS } from '../../data/projectsData';
-import { TIME_CONFIGS } from '../../data/timeConfigs';
+import { TIME_CONFIGS, lightingFilterFor, lightingWashFor } from '../../data/timeConfigs';
 import ProofBadge from '../ProofBadge';
 import { Sparkles, Sun, Check, Plus, Layers, Compass, ArrowRight, Eye, ZoomIn } from 'lucide-react';
 
@@ -45,19 +45,7 @@ export default function FinishExplorationExperience({
   const isAlreadyInCart = swatchList.some(s => s.id === activeFinish.id);
   const relatedProjects = REAL_PROJECTS.filter(p => p.relatedFinishIds.includes(activeFinish.id));
 
-  // Dynamic light ambiance filter for finish macro view
-  const getLightingFilter = () => {
-    switch (currentTime) {
-      case 'morning':
-        return 'brightness(1.04) contrast(1.02) hue-rotate(-6deg)';
-      case 'midday':
-        return 'brightness(1.14) contrast(1.08) saturate(1.06)';
-      case 'golden':
-        return 'brightness(1.08) contrast(1.12) sepia(0.26) saturate(1.3)';
-      case 'evening':
-        return 'brightness(0.74) contrast(1.22) sepia(0.38) saturate(0.9)';
-    }
-  };
+  const getLightingFilter = () => lightingFilterFor(currentTime);
 
   return (
     <div className="min-h-screen text-[#16191c] py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-28">
@@ -220,17 +208,9 @@ export default function FinishExplorationExperience({
               />
 
               {/* Ambient Rake Gradient */}
-              <div 
-                className="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-40"
-                style={{
-                  background: currentTime === 'golden' 
-                    ? 'linear-gradient(105deg, rgba(107,168,154,0.3) 0%, transparent 65%)'
-                    : currentTime === 'morning'
-                    ? 'linear-gradient(45deg, rgba(255,255,255,0.3) 0%, transparent 70%)'
-                    : currentTime === 'evening'
-                    ? 'linear-gradient(180deg, transparent 20%, rgba(20,15,10,0.65) 100%)'
-                    : 'linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 80%)'
-                }}
+              <div
+                className="absolute inset-0 pointer-events-none transition-[background,opacity] duration-700 opacity-70 mix-blend-soft-light"
+                style={{ background: lightingWashFor(currentTime) }}
               />
 
               {/* Viewport Info Floating Bar */}

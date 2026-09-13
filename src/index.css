@@ -1032,6 +1032,14 @@
     linear-gradient(105deg, rgba(19, 16, 9, 0.88) 0%, rgba(19, 16, 9, 0.55) 38%, rgba(19, 16, 9, 0.2) 62%, rgba(19, 16, 9, 0.45) 100%),
     linear-gradient(180deg, rgba(19, 16, 9, 0.4) 0%, transparent 40%, rgba(19, 16, 9, 0.82) 100%);
 }
+.dw-daylight-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 1;
+}
 .dw-strips {
   position: absolute;
   inset: 0;

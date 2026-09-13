@@ -11,3 +11,6 @@ _elementis_frames/
 _img_cache/
 *.mp4
 _fix_*.py
+public/full-page-screenshot.png
+
+.vercel

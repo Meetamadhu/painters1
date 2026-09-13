@@ -1,7 +1,7 @@
 import { useState, useRef, MouseEvent } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { TimeOfDay, FinishItem, PageExperience } from '../../types';
-import { TIME_CONFIGS } from '../../data/timeConfigs';
+import { TIME_CONFIGS, lightingFilterFor, lightingWashFor } from '../../data/timeConfigs';
 import { FINISHES_DATA } from '../../data/finishesData';
 import { REAL_PROJECTS } from '../../data/projectsData';
 import ProofBadge from '../ProofBadge';
@@ -70,18 +70,7 @@ export default function HomepageExperience({
   const timeInfo = TIME_CONFIGS[currentTime];
   const heroImage = '/hero-painter-melbourne.jpg';
 
-  const getLightingFilter = () => {
-    switch (currentTime) {
-      case 'morning':
-        return 'brightness(1.04) contrast(1.02) hue-rotate(-6deg)';
-      case 'midday':
-        return 'brightness(1.14) contrast(1.08) saturate(1.06)';
-      case 'golden':
-        return 'brightness(1.08) contrast(1.12) sepia(0.26) saturate(1.3)';
-      case 'evening':
-        return 'brightness(0.74) contrast(1.22) sepia(0.38) saturate(0.9)';
-    }
-  };
+  const getLightingFilter = () => lightingFilterFor(currentTime);
 
   const toggleAmbientSound = () => {
     if (!ambientAudio) {
@@ -188,14 +177,10 @@ export default function HomepageExperience({
             style={{ filter: getLightingFilter() }}
           />
           <div
-            className="absolute inset-0 z-0 animate-pm-shimmer"
+            className="absolute inset-0 z-0 animate-pm-shimmer transition-[background] duration-700"
             style={{
-              background:
-                currentTime === 'golden'
-                  ? 'linear-gradient(115deg, rgba(143,184,168,0.12) 0%, transparent 55%, rgba(238,241,243,0.35) 100%)'
-                  : currentTime === 'evening'
-                  ? 'linear-gradient(180deg, rgba(22,25,28,0.12) 0%, rgba(238,241,243,0.55) 100%)'
-                  : 'linear-gradient(180deg, rgba(238,241,243,0.08) 0%, rgba(238,241,243,0.62) 100%)'
+              background: lightingWashFor(currentTime),
+              mixBlendMode: 'soft-light'
             }}
           />
           <div className="absolute inset-0 z-0 bg-linear-to-t from-[#eef1f3]/90 via-[#eef1f3]/45 to-transparent" />

@@ -8,7 +8,7 @@ import {
   useTransform,
 } from 'motion/react';
 import { PageExperience, TimeOfDay, FinishItem } from '../../types';
-import { TIME_CONFIGS } from '../../data/timeConfigs';
+import { TIME_CONFIGS, lightingAccentFor, lightingFilterFor, lightingWashFor } from '../../data/timeConfigs';
 import { FINISHES_DATA } from '../../data/finishesData';
 import { REAL_PROJECTS } from '../../data/projectsData';
 import { SUBURBS_DATA } from '../../data/suburbsData';
@@ -327,26 +327,13 @@ export default function ContestLandingPage({
     return () => window.clearInterval(id);
   }, [reduceMotion, journeyPaused]);
 
-  const lightingFilter = useMemo(() => {
-    switch (currentTime) {
-      case 'morning':
-        return 'brightness(1.05) contrast(1.03) hue-rotate(-5deg) saturate(0.9)';
-      case 'midday':
-        return 'brightness(1.14) contrast(1.08) saturate(1.06)';
-      case 'golden':
-        return 'brightness(1.08) contrast(1.12) sepia(0.24) saturate(1.25)';
-      case 'evening':
-        return 'brightness(0.76) contrast(1.1) sepia(0.3) saturate(0.88)';
-      default:
-        return 'none';
-    }
-  }, [currentTime]);
+  const lightingFilter = useMemo(() => lightingFilterFor(currentTime), [currentTime]);
+  const lightingWash = useMemo(() => lightingWashFor(currentTime), [currentTime]);
+  const lightingAccent = useMemo(() => lightingAccentFor(currentTime), [currentTime]);
 
   const tokens = CONTEST_SUBMISSION_DATA['design-system'].content.designSystemTokens;
   const psychology = CONTEST_SUBMISSION_DATA['homeowner-psychology']?.content.psychologyBreakdown;
   const pastWork = CONTEST_SUBMISSION_DATA['past-work']?.content.pastWorkProjects;
-  const perfLines =
-    CONTEST_SUBMISSION_DATA['performance-mobile'].content.technicalArchitecture || [];
 
   const onWipePointer = (clientX: number, el: HTMLElement) => {
     const r = el.getBoundingClientRect();
@@ -378,31 +365,52 @@ export default function ContestLandingPage({
       <DestinationWorld
         onNavigateExperience={onNavigateExperience}
         onOpenAtelier={onOpenAtelier}
+        currentTime={currentTime}
       />
 
-      {/* Daylight rail — feeds wipe / filters below */}
+      {/* Daylight rail — drives hero, rooms, and wipe */}
       <div className="border-b border-[#c9d4ce] bg-[#16191c] px-5 py-4 sm:px-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-1.5">
-            {(Object.keys(TIME_CONFIGS) as TimeOfDay[]).map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => onTimeChange(t)}
-                className={`px-3.5 py-2 font-mono-spec text-[0.62rem] uppercase tracking-[0.16em] transition-colors ${
-                  currentTime === t
-                    ? 'bg-[#eef1f3] text-[#16191c]'
-                    : 'text-[#9aa3ab] hover:text-[#eef1f3]'
-                }`}
-              >
-                {TIME_CONFIGS[t].label}
-              </button>
-            ))}
+            {(Object.keys(TIME_CONFIGS) as TimeOfDay[]).map((t) => {
+              const on = currentTime === t;
+              const Icon = TIME_CONFIGS[t].icon;
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => onTimeChange(t)}
+                  className={`inline-flex items-center gap-2 px-3.5 py-2 font-mono-spec text-[0.62rem] uppercase tracking-[0.16em] transition-all duration-300 ${
+                    on
+                      ? 'bg-[#eef1f3] text-[#16191c]'
+                      : 'text-[#9aa3ab] hover:text-[#eef1f3]'
+                  }`}
+                  title={TIME_CONFIGS[t].description}
+                >
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full transition-colors duration-300"
+                    style={{ background: lightingAccentFor(t), boxShadow: on ? `0 0 10px ${lightingAccentFor(t)}` : undefined }}
+                  />
+                  <Icon className="h-3.5 w-3.5" />
+                  {TIME_CONFIGS[t].label}
+                </button>
+              );
+            })}
           </div>
-          <p className="font-mono-spec text-[0.62rem] uppercase tracking-[0.18em] text-[#6a7a74]">
-            Daylight · {timeInfo.timeString} · {timeInfo.kelvin}
+          <p className="font-mono-spec text-[0.62rem] uppercase tracking-[0.18em] text-[#9aa3ab]">
+            <span className="text-[#8fb8a8]">{timeInfo.label}</span>
+            {' · '}
+            {timeInfo.timeString}
+            {' · '}
+            {timeInfo.kelvin}
           </p>
         </div>
+        <div
+          className="mx-auto mt-3 h-1 max-w-7xl transition-all duration-500"
+          style={{
+            background: `linear-gradient(90deg, ${lightingAccent}, transparent 70%)`
+          }}
+        />
       </div>
 
       {/* Proof strip */}
@@ -556,7 +564,11 @@ export default function ContestLandingPage({
                       <motion.img
                         src={item.image}
                         alt=""
-                        style={{ y: journeyFrameY }}
+                        style={{
+                          y: journeyFrameY,
+                          filter: lightingFilter,
+                          transition: 'filter 0.7s ease'
+                        }}
                         className="absolute inset-0 h-[120%] w-full object-cover will-change-transform"
                         initial={false}
                         animate={{
@@ -573,6 +585,10 @@ export default function ContestLandingPage({
                 })}
               </div>
 
+              <div
+                className="pointer-events-none absolute inset-0 z-3 mix-blend-soft-light transition-[background] duration-700"
+                style={{ background: lightingWash }}
+              />
               <div className="pointer-events-none absolute inset-0 z-3 bg-[linear-gradient(180deg,rgba(14,16,18,0.15)_0%,transparent_28%,rgba(14,16,18,0.55)_62%,rgba(14,16,18,0.94)_100%)]" />
               <div className="pointer-events-none absolute inset-0 z-3 bg-[linear-gradient(90deg,rgba(14,16,18,0.55)_0%,transparent_45%)]" />
 
@@ -804,7 +820,7 @@ export default function ContestLandingPage({
               <img
                 src={project.beforeImage}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover transition-[filter] duration-700"
                 style={{ filter: lightingFilter }}
                 draggable={false}
               />
@@ -815,10 +831,21 @@ export default function ContestLandingPage({
                 <img
                   src={project.afterImage}
                   alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover transition-[filter] duration-700"
                   style={{ filter: lightingFilter }}
                   draggable={false}
                 />
+              </div>
+              <div
+                className="pointer-events-none absolute inset-0 z-5 mix-blend-soft-light transition-[background] duration-700"
+                style={{ background: lightingWash }}
+              />
+              <div
+                className="pointer-events-none absolute top-3 left-3 z-10 border border-[#eef1f3]/30 bg-[#0e1012]/55 px-2.5 py-1.5 backdrop-blur-sm"
+              >
+                <p className="font-mono-spec text-[0.55rem] uppercase tracking-[0.16em] text-[#eef1f3]">
+                  Daylight · {timeInfo.label}
+                </p>
               </div>
               <div
                 className="absolute top-0 bottom-0 z-10 w-px bg-[#eef1f3]"
@@ -909,78 +936,6 @@ export default function ContestLandingPage({
                 </div>
               </div>
             </RevealMedia>
-          </div>
-        </div>
-      </SectionBand>
-
-      {/* Performance — stack callout */}
-      <SectionBand
-        reduceMotion={reduceMotion}
-        className="relative overflow-hidden border-t border-[#c9d4ce] bg-[#16191c] px-5 py-24 text-[#eef1f3] sm:px-10 lg:px-16"
-      >
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(ellipse_at_top_right,rgba(143,184,168,0.14),transparent_55%)]" />
-        <div className="relative mx-auto max-w-7xl">
-          <motion.div {...rise()}>
-            <p className="font-mono-spec text-[0.68rem] uppercase tracking-[0.22em] text-[#8fb8a8]">
-              Performance · specimen stack
-            </p>
-            <h2 className="mt-4 font-editorial text-[clamp(1.7rem,3.8vw,2.85rem)] font-light leading-[1.15]">
-              <RevealLine reduceMotion={reduceMotion}>ScrollifyJS + Animate.css + CSS flexbox</RevealLine>
-            </h2>
-            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#9aa3ab]">
-              The walnut specimen snaps full-height panels, plays entrance fades on after, and lays
-              out every act in flex — immersive on desktop, plain scroll when motion or width asks
-              for calm.
-            </p>
-          </motion.div>
-
-          <div className="mt-12 grid gap-px bg-[#2c3538] sm:grid-cols-3">
-            {[
-              {
-                name: 'ScrollifyJS',
-                detail: 'Full-page .panel snap with 900ms ease. Off under 900px and prefers-reduced-motion.'
-              },
-              {
-                name: 'Animate.css',
-                detail: 'fadeIn / fadeInUp / fadeInRight fire when a panel becomes active — not on first paint.'
-              },
-              {
-                name: 'CSS flexbox',
-                detail: 'Hero, beats, reveal, rooms, hours, and close shells — flex-wrap, no grid lock-in.'
-              }
-            ].map((item, i) => (
-              <motion.div key={item.name} className="bg-[#16191c] p-6 sm:p-8" {...staggerProps(i, reduceMotion)}>
-                <p className="font-mono-spec text-[0.62rem] tracking-[0.16em] text-[#8fb8a8]">
-                  0{i + 1}
-                </p>
-                <h3 className="mt-3 font-editorial text-2xl font-light">{item.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#9aa3ab]">{item.detail}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="/painter-melbourne.html"
-              className="pm-cta inline-flex items-center gap-2 bg-[#8fb8a8] px-6 py-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#16191c]"
-            >
-              Open HTML specimen
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-            <p className="font-mono-spec text-[0.62rem] uppercase tracking-[0.14em] text-[#6a7a74]">
-              http://127.0.0.1:5174/painter-melbourne.html
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-x-10 gap-y-8 border-t border-[#2c3538] pt-10 md:grid-cols-2">
-            {perfLines.map((line, i) => (
-              <motion.div key={line.slice(0, 28)} {...staggerProps(i, reduceMotion)}>
-                <p className="font-mono-spec text-[0.62rem] tracking-[0.14em] text-[#8fb8a8]">
-                  0{i + 1}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-[#9aa3ab]">{line}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </SectionBand>

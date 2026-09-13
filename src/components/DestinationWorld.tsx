@@ -7,7 +7,8 @@ import {
   type PointerEvent as ReactPointerEvent
 } from 'react';
 import { useReducedMotion } from 'motion/react';
-import { PageExperience } from '../types';
+import { PageExperience, TimeOfDay } from '../types';
+import { lightingFilterFor, lightingWashFor } from '../data/timeConfigs';
 
 export type Destination = {
   id: string;
@@ -85,11 +86,13 @@ const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 interface DestinationWorldProps {
   onNavigateExperience: (exp: PageExperience) => void;
   onOpenAtelier: () => void;
+  currentTime?: TimeOfDay;
 }
 
 export default function DestinationWorld({
   onNavigateExperience,
-  onOpenAtelier
+  onOpenAtelier,
+  currentTime = 'golden'
 }: DestinationWorldProps) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -249,6 +252,8 @@ export default function DestinationWorld({
   const labelA = heroLabel(titleA);
   const labelB = heroLabel(titleB);
   const showDestinationTitle = Boolean(labelA || (swapping && labelB));
+  const lightFilter = lightingFilterFor(currentTime);
+  const lightWash = lightingWashFor(currentTime);
 
   return (
     <section
@@ -256,6 +261,7 @@ export default function DestinationWorld({
         hot && !open ? ' is-hot' : ''
       }`}
       aria-label="Destination experience"
+      data-daylight={currentTime}
     >
       <div
         ref={stageRef}
@@ -272,7 +278,12 @@ export default function DestinationWorld({
       >
         <div className="dw-media" aria-hidden="true">
           <div className="dw-base">
-            <img src={baseSrc} alt="" decoding="async" />
+            <img
+              src={baseSrc}
+              alt=""
+              decoding="async"
+              style={{ filter: lightFilter, transition: 'filter 0.7s ease' }}
+            />
           </div>
           {incomingSrc && (
             <div className="dw-incoming">
@@ -289,13 +300,22 @@ export default function DestinationWorld({
                       } as CSSProperties
                     }
                   >
-                    <img src={incomingSrc} alt="" decoding="async" />
+                    <img
+                      src={incomingSrc}
+                      alt=""
+                      decoding="async"
+                      style={{ filter: lightFilter, transition: 'filter 0.7s ease' }}
+                    />
                   </div>
                 ))}
               </div>
             </div>
           )}
           <div className="dw-grade" />
+          <div
+            className="dw-daylight-wash"
+            style={{ background: lightWash, transition: 'background 0.7s ease, opacity 0.7s ease' }}
+          />
         </div>
 
         <div className="dw-ui">
