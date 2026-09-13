@@ -126,7 +126,7 @@ function useSectionMotion(
   const y = useTransform(
     progress,
     [0, 1],
-    reduceMotion ? [0, 0] : [32, 0]
+    reduceMotion ? [0, 0] : [20, 0]
   );
   const opacity = useTransform(
     progress,
@@ -369,7 +369,7 @@ export default function ContestLandingPage({
       />
 
       {/* Daylight rail — drives hero, rooms, and wipe */}
-      <div className="border-b border-[#c9d4ce] bg-[#16191c] px-5 py-4 sm:px-10">
+      <div className="border-b border-[#c9d4ce] bg-[#16191c] px-5 py-3 sm:px-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-1.5">
             {(Object.keys(TIME_CONFIGS) as TimeOfDay[]).map((t) => {
@@ -406,7 +406,7 @@ export default function ContestLandingPage({
           </p>
         </div>
         <div
-          className="mx-auto mt-3 h-1 max-w-7xl transition-all duration-500"
+          className="mx-auto mt-2 h-0.5 max-w-7xl transition-all duration-500"
           style={{
             background: `linear-gradient(90deg, ${lightingAccent}, transparent 70%)`
           }}
@@ -414,7 +414,7 @@ export default function ContestLandingPage({
       </div>
 
       {/* Proof strip */}
-      <div className="border-y border-[#c9d4ce] bg-[#16191c] px-5 py-3.5 sm:px-10">
+      <div className="border-y border-[#c9d4ce] bg-[#16191c] px-5 py-2.5 sm:px-10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
           <p className="max-w-4xl text-[0.8rem] leading-relaxed text-[#9aa3ab] sm:whitespace-nowrap">
             <span className="text-[#8fb8a8]">Real vs conceptual — </span>
@@ -430,7 +430,7 @@ export default function ContestLandingPage({
       {/* Design language */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="relative overflow-hidden px-5 py-24 sm:px-10 lg:px-16"
+        className="relative overflow-hidden px-5 py-14 sm:px-10 lg:px-14"
       >
         <div className="mineral-grain pointer-events-none absolute inset-0 opacity-60" />
         <div className="relative mx-auto max-w-7xl">
@@ -446,7 +446,7 @@ export default function ContestLandingPage({
             </h2>
           </motion.div>
 
-          <div className="mt-14 grid gap-12 lg:grid-cols-12">
+          <div className="mt-8 grid gap-8 lg:grid-cols-12">
             <motion.div className="lg:col-span-5" {...rise(0.1)}>
               <div className="flex h-full flex-col justify-between gap-8 border-t border-[#a8c0b6] pt-6">
                 <div>
@@ -493,7 +493,7 @@ export default function ContestLandingPage({
       {/* Six experiences — enter each room */}
       <section
         ref={journeyRef}
-        className="relative overflow-hidden border-t border-[#c9d4ce] bg-[#0e1012] px-5 py-24 text-[#eef1f3] sm:px-10 sm:py-28 lg:px-16"
+        className="relative overflow-hidden border-t border-[#c9d4ce] bg-[#0e1012] px-5 py-14 text-[#eef1f3] sm:px-10 sm:py-16 lg:px-14"
         onMouseEnter={() => setJourneyPaused(true)}
         onMouseLeave={() => setJourneyPaused(false)}
       >
@@ -503,7 +503,7 @@ export default function ContestLandingPage({
         <div className="relative mx-auto max-w-7xl">
           <motion.div
             style={{ y: journeyHeadY, opacity: journeyHeadOpacity }}
-            className="mb-10 flex flex-wrap items-end justify-between gap-6 will-change-transform"
+            className="mb-6 flex flex-wrap items-end justify-between gap-6 will-change-transform"
           >
             <div>
               <p className="font-mono-spec text-[0.68rem] uppercase tracking-[0.28em] text-[#8fb8a8]">
@@ -525,7 +525,7 @@ export default function ContestLandingPage({
             <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-3 bg-linear-to-l from-[#0e1012] to-transparent sm:w-5" />
             <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-4 bg-linear-to-b from-[#0e1012]/90 to-transparent" />
 
-            <div className="relative aspect-4/5 sm:aspect-16/10 lg:aspect-21/9 lg:min-h-144">
+            <div className="relative aspect-4/5 sm:aspect-16/10 lg:aspect-2/1 lg:min-h-112">
               {/* Stacked rooms — crossfade without remount pop */}
               <div className="absolute inset-0">
                 {JOURNEY.map((item, i) => {
@@ -612,7 +612,7 @@ export default function ContestLandingPage({
                     duration: reduceMotion ? 0 : 0.75,
                     ease: journeyEase
                   }}
-                  className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-10 lg:max-w-2xl"
+                  className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-8 lg:max-w-xl"
                 >
                   <p className="font-mono-spec text-[0.62rem] uppercase tracking-[0.28em] text-[#8fb8a8]">
                     Room {activeJourney.act} · {activeJourney.caption}
@@ -761,9 +761,9 @@ export default function ContestLandingPage({
       <SectionBand
         id="transform"
         reduceMotion={reduceMotion}
-        className="border-t border-[#c9d4ce] px-5 py-24 sm:px-10 lg:px-16"
+        className="border-t border-[#c9d4ce] px-5 py-14 sm:px-10 lg:px-14"
       >
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-10">
           <motion.div {...rise()}>
             <p className="font-mono-spec text-[0.68rem] uppercase tracking-[0.22em] text-[#4a6b5e]">
               Interaction concept
@@ -781,7 +781,7 @@ export default function ContestLandingPage({
               Drag the divider. Change daylight above. Acrylic holds one note; mineral finishes open.
               Specialist surfaces become explorable — not claimed in adjectives.
             </motion.p>
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2">
               {FINISHES_DATA.slice(0, 5).map((f, i) => (
                 <motion.div key={f.id} {...staggerProps(i, reduceMotion)}>
                   <button
@@ -869,10 +869,10 @@ export default function ContestLandingPage({
       {/* Real case */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="border-t border-[#c9d4ce] bg-[#e8eeea] px-5 py-24 sm:px-10 lg:px-16"
+        className="border-t border-[#c9d4ce] bg-[#e8eeea] px-5 py-14 sm:px-10 lg:px-14"
       >
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
             <motion.div className="lg:col-span-5" {...rise()}>
               <ProofBadge kind={project.proofStatus} />
               <p className="mt-6 font-mono-spec text-[0.68rem] uppercase tracking-[0.22em] text-[#4a6b5e]">
@@ -887,7 +887,7 @@ export default function ContestLandingPage({
               <p className="mt-6 text-sm leading-relaxed text-[#5a6660] sm:text-[0.95rem]">
                 {project.transformationStory}
               </p>
-              <blockquote className="mt-8 border-l border-[#8fb8a8] pl-5 font-editorial text-xl font-light italic leading-snug text-[#16191c]">
+              <blockquote className="mt-5 border-l border-[#8fb8a8] pl-5 font-editorial text-xl font-light italic leading-snug text-[#16191c]">
                 “{project.homeownerQuote.quote}”
                 <span className="mt-3 block font-mono-spec text-[0.62rem] not-italic uppercase tracking-[0.14em] text-[#6a7a74]">
                   — {project.homeownerQuote.author}
@@ -897,7 +897,7 @@ export default function ContestLandingPage({
               <button
                 type="button"
                 onClick={() => onNavigateExperience('case-study')}
-                className="pm-cta mt-8 inline-flex items-center gap-2 bg-[#4a6b5e] px-6 py-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#eef1f3]"
+                className="pm-cta mt-5 inline-flex items-center gap-2 bg-[#4a6b5e] px-6 py-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#eef1f3]"
               >
                 Open full case study
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -943,7 +943,7 @@ export default function ContestLandingPage({
       {/* Psychology */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="border-t border-[#c9d4ce] bg-[#e8eeea] px-5 py-24 sm:px-10 lg:px-16"
+        className="border-t border-[#c9d4ce] bg-[#e8eeea] px-5 py-14 sm:px-10 lg:px-14"
       >
         <div className="mx-auto max-w-7xl">
           <motion.div {...rise()}>
@@ -957,9 +957,9 @@ export default function ContestLandingPage({
               </RevealLine>
             </h2>
           </motion.div>
-          <div className="mt-12 space-y-0 divide-y divide-[#c9d4ce] border-y border-[#c9d4ce]">
+          <div className="mt-8 space-y-0 divide-y divide-[#c9d4ce] border-y border-[#c9d4ce]">
             {(psychology || []).map((row, i) => (
-              <motion.div key={row.trigger} className="grid gap-6 py-8 md:grid-cols-3" {...staggerProps(i, reduceMotion)}>
+              <motion.div key={row.trigger} className="grid gap-5 py-5 md:grid-cols-3" {...staggerProps(i, reduceMotion)}>
                 <div>
                   <p className="font-mono-spec text-[0.58rem] uppercase tracking-[0.14em] text-[#8fb8a8]">
                     Trigger
@@ -987,7 +987,7 @@ export default function ContestLandingPage({
       {/* Past work */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="border-t border-[#c9d4ce] px-5 py-24 sm:px-10 lg:px-16"
+        className="border-t border-[#c9d4ce] px-5 py-14 sm:px-10 lg:px-14"
       >
         <div className="mx-auto max-w-7xl">
           <motion.div {...rise()}>
@@ -1001,9 +1001,9 @@ export default function ContestLandingPage({
               Structure ready for your portfolio URLs before submission.
             </p>
           </motion.div>
-          <div className="mt-12 grid gap-px bg-[#c9d4ce] sm:grid-cols-2">
+          <div className="mt-8 grid gap-px bg-[#c9d4ce] sm:grid-cols-2">
             {(pastWork || []).map((w, i) => (
-              <motion.div key={w.title} className="bg-[#f2f5f3] p-7 sm:p-8" {...staggerProps(i, reduceMotion)}>
+              <motion.div key={w.title} className="bg-[#f2f5f3] p-5 sm:p-6" {...staggerProps(i, reduceMotion)}>
                 <p className="font-mono-spec text-[0.62rem] uppercase tracking-[0.14em] text-[#4a6b5e]">
                   {w.year} · {w.category}
                 </p>
@@ -1019,7 +1019,7 @@ export default function ContestLandingPage({
       {/* Depth strip */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="border-t border-[#c9d4ce] bg-[#16191c] px-5 py-14 text-[#eef1f3] sm:px-10"
+        className="border-t border-[#c9d4ce] bg-[#16191c] px-5 py-10 text-[#eef1f3] sm:px-10"
       >
         <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8">
           <div>
@@ -1058,7 +1058,7 @@ export default function ContestLandingPage({
       {/* Close */}
       <SectionBand
         reduceMotion={reduceMotion}
-        className="relative overflow-hidden px-5 py-28 text-center sm:px-10"
+        className="relative overflow-hidden px-5 py-16 text-center sm:px-10"
       >
         <div className="mineral-grain pointer-events-none absolute inset-0 opacity-50" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-64 w-xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8fb8a8]/15 blur-3xl" />
@@ -1078,7 +1078,7 @@ export default function ContestLandingPage({
           >
             Boards on your wall for a week. Substrate read on site. No high-pressure quote theatre.
           </motion.p>
-          <motion.div className="mt-10 flex flex-wrap justify-center gap-3" {...riseSoft(0.28)}>
+          <motion.div className="mt-7 flex flex-wrap justify-center gap-3" {...riseSoft(0.28)}>
             <button
               type="button"
               onClick={onOpenAtelier}

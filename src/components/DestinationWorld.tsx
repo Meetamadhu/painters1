@@ -80,7 +80,8 @@ const DESTINATIONS: Destination[] = [
 ];
 
 const STRIP_N = 16;
-const TRANSITION_MS = 1100;
+const TRANSITION_MS = 700;
+const AUTO_ADVANCE_MS = 3200;
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
 interface DestinationWorldProps {
@@ -144,9 +145,11 @@ export default function DestinationWorld({
   const goTo = useCallback(
     (next: number) => {
       if (busyRef.current) return;
-      if (next < 0 || next >= DESTINATIONS.length || next === indexRef.current) return;
+      const len = DESTINATIONS.length;
+      const target = ((next % len) + len) % len;
+      if (target === indexRef.current) return;
 
-      const d = DESTINATIONS[next];
+      const d = DESTINATIONS[target];
       busyRef.current = true;
       setAnimating(true);
       setTitleB(d.title);
@@ -157,7 +160,7 @@ export default function DestinationWorld({
         setBaseSrc(d.image);
         setTitleA(d.title);
         setSwapping(false);
-        setIndex(next);
+        setIndex(target);
         busyRef.current = false;
         setAnimating(false);
         return;
@@ -177,13 +180,22 @@ export default function DestinationWorld({
         setIncomingSrc(null);
         setTitleA(d.title);
         setSwapping(false);
-        setIndex(next);
+        setIndex(target);
         busyRef.current = false;
         setAnimating(false);
       }, TRANSITION_MS);
     },
     [applyCopy, reduceMotion]
   );
+
+  /** Auto-cycle the three destination images; pause while panel is open or pointer is over the stage. */
+  useEffect(() => {
+    if (open || hot) return;
+    const id = window.setInterval(() => {
+      goTo(indexRef.current + 1);
+    }, AUTO_ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [goTo, open, hot]);
 
   const openPanel = () => {
     setOpen(true);

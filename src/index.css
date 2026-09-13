@@ -984,8 +984,8 @@
    ========================================================================== */
 .dw-world {
   position: relative;
-  min-height: 100svh;
-  height: 100svh;
+  min-height: 88svh;
+  height: 88svh;
   overflow: hidden;
   background: #131009;
   color: #f0e6d6;
@@ -1064,7 +1064,7 @@
   max-width: none;
 }
 .dw-world.is-animating .dw-strip {
-  animation: dwStripIn 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: dwStripIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--i) * 28ms);
 }
 @keyframes dwStripIn {
@@ -1200,7 +1200,7 @@
 .dw-lede {
   position: absolute;
   left: clamp(1.25rem, 4vw, 4rem);
-  bottom: calc(clamp(28px, 5vh, 48px) + 100px);
+  bottom: calc(clamp(20px, 3.5vh, 36px) + 72px);
   max-width: 34ch;
   font-size: 0.9rem;
   line-height: 1.55;
@@ -1243,11 +1243,11 @@
   position: absolute;
   right: clamp(1.25rem, 4vw, 4rem);
   left: auto;
-  bottom: clamp(28px, 5vh, 48px);
+  bottom: clamp(20px, 3.5vh, 36px);
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 6px;
   align-items: flex-end;
   z-index: 6;
   pointer-events: auto;
@@ -1255,8 +1255,8 @@
 }
 .dw-thumbs button {
   position: relative;
-  width: 72px;
-  height: 48px;
+  width: 60px;
+  height: 40px;
   padding: 0;
   overflow: hidden;
   border: 1px solid rgba(240, 230, 214, 0.28);
@@ -1486,11 +1486,11 @@
 @media (max-width: 900px) {
   .dw-world {
     height: auto;
-    min-height: 100svh;
+    min-height: 78svh;
   }
   .dw-stage {
     position: relative;
-    min-height: 100svh;
+    min-height: 78svh;
     inset: auto;
   }
   .dw-world.is-open .dw-stage {
